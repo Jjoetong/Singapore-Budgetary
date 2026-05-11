@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline';">
+<title>SG Relocation — Expense Tracker</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+:root {
+  --bg:         #060910;
+  --s1:         #0a0f1c;
+  --s2:         #0e1526;
+  --s3:         #12192e;
+  --s4:         #172135;
+  --bdr:        #1c2d42;
+  --bdr2:       #243650;
+  --cyan:       #18b8d4;
+  --cyan-b:     #3dd4ec;
+  --cyan-mute:  rgba(61,212,236,0.14);
+  --cyan-line:  rgba(61,212,236,0.18);
+  --green:      #0c9a6a;
+  --green-b:    #10c484;
+  --green-mute: rgba(16,196,132,0.12);
+  --amber:      #c07808;
+  --amber-b:    #eda820;
+  --amber-mute: rgba(237,168,32,0.12);
+  --red:        #c84040;
+  --red-b:      #ee7070;
+  --red-mute:   rgba(238,112,112,0.10);
+  --purple:     #6050c0;
+  --purple-b:   #8878e0;
+  --text:       #c4d8ec;
+  --text2:      #6e90ae;
+  --text3:      #3a5266;
+  --serif:      'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+  --sans:       'DM Sans', -apple-system, 'Helvetica Neue', Arial, sans-serif;
+}
+
+html, body { height:100%; height:100dvh; }
+body {
+  background: #060910;
+  color: #c4d8ec;
+  font-family: 'DM Sans', -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  max-width: 430px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── HEADER ─────────────────────────────── */
+.hdr {
+  background: #0a0f1c;
+  border-bottom: 1px solid #1c2d42;
+  padding: 13px 20px 11px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  position: relative;
+}
+.hdr::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(61,212,236,0.25), transparent);
+}
+.hdr-brand {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: #c4d8ec;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+.hdr-sub {
+  font-size: 9.5px;
+  color: #3a5266;
+  margin-top: 3px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+}
+.rate-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(61,212,236,0.08);
+  border: 1px solid rgba(61,212,236,0.20);
+  border-radius: 6px;
+  padding: 5px 11px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #3dd4ec;
+  letter-spacing: 0.03em;
+}
+.live-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: #10c484;
+  box-shadow: 0 0 5px #10c484;
+  animation: blink 3s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.15} }
+
+/* ── BALANCE BAR ────────────────────────── */
+.balance-bar {
+  background: #0a0f1c;
+  border-bottom: 1px solid #1c2d42;
+  padding: 14px 20px 10px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+.balance-bar::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(61,212,236,0.18), transparent);
+}
+.bb-lbl {
+  font-size: 9.5px;
+  font-weight: 600;
+  color: #3a5266;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 5px;
+}
+.bb-fig {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #3dd4ec;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+.bb-rm { font-size: 10.5px; color: #3a5266; margin-top: 4px; }
+.bb-right { text-align: right; }
+.bb-spent {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 19px;
+  color: #6e90ae;
+  line-height: 1;
+}
+.bb-spent-lbl { font-size: 9.5px; color: #3a5266; text-transform: uppercase; letter-spacing: 0.10em; margin-top: 3px; }
+.bb-pct {
+  display: inline-block;
+  margin-top: 7px;
+  background: rgba(237,168,32,0.12);
+  border: 1px solid rgba(237,168,32,0.22);
+  border-radius: 5px;
+  padding: 2px 8px;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #eda820;
+  letter-spacing: 0.04em;
+}
+
+.balance-prog {
+  background: #0a0f1c;
+  border-bottom: 1px solid #1c2d42;
+  padding: 0 20px 10px;
+  flex-shrink: 0;
+}
+.bp-track { height: 3px; background: #172135; border-radius: 3px; overflow: hidden; }
+.bp-fill  { height: 100%; width: 0%; background: linear-gradient(90deg, #0c4f70, #3dd4ec); border-radius: 3px; box-shadow: 0 0 7px rgba(61,212,236,0.20); transition: width 0.4s ease; }
+
+/* ── TABS ───────────────────────────────── */
+.tabs {
+  display: flex;
+  background: #0a0f1c;
+  border-bottom: 1px solid #1c2d42;
+  flex-shrink: 0;
+}
+.tab {
+  flex: 1;
+  padding: 11px 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #3a5266;
+  text-align: center;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color .18s, border-color .18s;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  user-select: none;
+}
+.tab.active { color: #3dd4ec; border-bottom-color: #18b8d4; }
+
+/* ── PANELS ─────────────────────────────── */
+.content { flex: 1; overflow: hidden; position: relative; }
+.panel { display: none; height: 100%; overflow-y: auto; padding: 14px 15px 88px; scrollbar-width: none; }
+.panel::-webkit-scrollbar { display: none; }
+.panel.active { display: block; }
+
+/* ── SECTION LABEL ──────────────────────── */
+.sec {
+  font-size: 9.5px;
+  font-weight: 600;
+  color: #3a5266;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin: 16px 0 9px 1px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.sec:first-child { margin-top: 2px; }
+.sec::after { content: ''; flex: 1; height: 1px; background: #1c2d42; }
+
+/* ═══ OVERVIEW ═══════════════════════════ */
+.req-card {
+  background: #0e1526;
+  border: 1px solid #243650;
+  border-radius: 16px;
+  padding: 20px 20px 18px;
+  margin-bottom: 8px;
+  position: relative;
+  overflow: hidden;
+}
+.req-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent 5%, #3dd4ec 40%, #18b8d4 60%, transparent 95%);
+  opacity: 0.55;
+}
+.req-eyebrow {
+  font-size: 10px;
+  font-weight: 600;
+  color: #3a5266;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin-bottom: 8px;
+}
+.req-row { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 16px; }
+.req-fig {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 50px;
+  font-weight: 700;
+  color: #3dd4ec;
+  line-height: 1;
+}
+.req-sub { font-size: 11px; color: #3a5266; margin-top: 5px; }
+.req-settled { text-align: right; }
+.req-settled-lbl { font-size: 9.5px; color: #3a5266; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 5px; }
+.req-settled-fig {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 22px;
+  color: #10c484;
+}
+
+.req-prog-meta { display: flex; justify-content: space-between; font-size: 10px; color: #3a5266; margin-bottom: 6px; }
+.req-prog-track { height: 4px; background: #172135; border-radius: 3px; overflow: hidden; margin-bottom: 16px; }
+.req-prog-fill  {
+  height: 100%;
+  background: linear-gradient(90deg, #0c5070, #3dd4ec);
+  border-radius: 3px;
+  box-shadow: 0 0 8px rgba(61,212,236,0.20);
+  transition: width 0.35s ease;
+}
+
+.req-cats { display: flex; gap: 7px; }
+.req-cat {
+  flex: 1;
+  background: #12192e;
+  border: 1px solid #1c2d42;
+  border-radius: 10px;
+  padding: 10px 10px 9px;
+  text-align: center;
+}
+.req-cat-lbl { font-size: 8.5px; font-weight: 600; color: #3a5266; text-transform: uppercase; letter-spacing: 0.10em; margin-bottom: 5px; }
+.req-cat-val {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.sum-card {
+  background: #0e1526;
+  border: 1px solid #1c2d42;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 7px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  overflow: hidden;
+}
+.sum-accent { position: absolute; left: 0; top: 0; bottom: 0; width: 3px; border-radius: 12px 0 0 12px; }
+.sum-name { font-size: 15px; font-weight: 600; color: #c4d8ec; margin-bottom: 3px; }
+.sum-desc { font-size: 11.5px; color: #3a5266; line-height: 1.4; }
+.sum-amt  {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 21px;
+  flex-shrink: 0;
+}
+
+.bar-wrap { background: #0e1526; border: 1px solid #1c2d42; border-radius: 12px; padding: 17px 16px; }
+
+/* ═══ BREAKDOWN ══════════════════════════ */
+.row-card {
+  background: #0e1526;
+  border: 1px solid #1c2d42;
+  border-radius: 12px;
+  padding: 13px 15px 12px;
+  margin-bottom: 7px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  overflow: hidden;
+}
+.row-card.has-prog { flex-direction: column; align-items: stretch; }
+.row-accent { position: absolute; left: 0; top: 0; bottom: 0; width: 3px; border-radius: 12px 0 0 12px; }
+.row-body { flex: 1; min-width: 0; padding-left: 7px; }
+.row-name { font-size: 14px; font-weight: 600; color: #c4d8ec; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.row-desc { font-size: 11px; color: #3a5266; line-height: 1.45; }
+.row-right { text-align: right; flex-shrink: 0; }
+.row-amt  {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 18px;
+  color: #c4d8ec;
+  line-height: 1;
+}
+.badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 4px;
+  margin-top: 5px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.b-paid    { background: rgba(16,196,132,0.12); color: #10c484; border: 1px solid rgba(16,196,132,0.20); }
+.b-deposit { background: rgba(237,168,32,0.12);  color: #eda820; border: 1px solid rgba(237,168,32,0.20); }
+.b-rm      { background: rgba(136,120,224,0.12); color: #8878e0; border: 1px solid rgba(136,120,224,0.20); }
+
+.row-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%; }
+.mini-prog { margin-top: 11px; width: 100%; }
+.mini-lbl  { display: flex; justify-content: space-between; font-size: 10px; color: #3a5266; margin-bottom: 5px; }
+.mini-track { height: 3px; background: #172135; border-radius: 3px; overflow: hidden; }
+.mini-fill  { height: 100%; border-radius: 3px; transition: width 0.4s ease; }
+
+.subtotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  background: #12192e;
+  border: 1px solid #1c2d42;
+  border-radius: 9px;
+  margin-top: 2px;
+  margin-bottom: 4px;
+}
+.sub-lbl { font-size: 12px; color: #3a5266; font-weight: 500; }
+.sub-val {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 17px;
+}
+
+.grand {
+  margin-top: 16px;
+  background: #0e1526;
+  border: 1px solid #243650;
+  border-radius: 14px;
+  padding: 18px 20px 17px;
+  position: relative;
+  overflow: hidden;
+}
+.grand::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(61,212,236,0.20), transparent);
+}
+.grand-lbl { font-size: 9.5px; color: #3a5266; text-transform: uppercase; letter-spacing: 0.14em; font-weight: 600; margin-bottom: 8px; }
+.grand-amt {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 44px;
+  color: #3dd4ec;
+  line-height: 1;
+}
+.grand-sub { font-size: 11.5px; color: #3a5266; margin-top: 6px; line-height: 1.5; }
+
+/* ═══ CHECKLIST ══════════════════════════ */
+.chk-banner {
+  background: #0e1526;
+  border: 1px solid #243650;
+  border-radius: 16px;
+  padding: 20px 20px 18px;
+  margin-bottom: 4px;
+  position: relative;
+  overflow: hidden;
+}
+.chk-banner::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent 5%, #3dd4ec 40%, #18b8d4 60%, transparent 95%);
+  opacity: 0.55;
+}
+.chk-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+.chk-lbl { font-size: 10px; font-weight: 600; color: #3a5266; text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 7px; }
+.chk-fig {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 50px;
+  font-weight: 700;
+  color: #3dd4ec;
+  line-height: 1;
+}
+.chk-fig-sub { font-size: 11px; color: #3a5266; margin-top: 5px; }
+.chk-right { text-align: right; }
+.chk-settled-lbl { font-size: 9.5px; color: #3a5266; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 5px; }
+.chk-settled-fig {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 22px;
+  color: #10c484;
+}
+.chk-pill {
+  display: inline-block;
+  margin-top: 8px;
+  background: rgba(16,196,132,0.10);
+  border: 1px solid rgba(16,196,132,0.22);
+  border-radius: 5px;
+  padding: 3px 9px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #10c484;
+  letter-spacing: 0.05em;
+}
+.chk-prog-meta { display: flex; justify-content: space-between; font-size: 10px; color: #3a5266; margin-bottom: 6px; }
+.chk-prog-track { height: 4px; background: #172135; border-radius: 3px; overflow: hidden; }
+.chk-prog-fill  {
+  height: 100%;
+  background: linear-gradient(90deg, #0c5070, #3dd4ec);
+  border-radius: 3px;
+  box-shadow: 0 0 7px rgba(61,212,236,0.20);
+  transition: width 0.35s ease;
+}
+.chk-cats { display: flex; gap: 7px; margin-top: 16px; }
+.chk-cat  { flex: 1; background: #12192e; border: 1px solid #1c2d42; border-radius: 10px; padding: 10px 8px 9px; text-align: center; }
+.chk-cat-lbl { font-size: 8.5px; font-weight: 600; color: #3a5266; text-transform: uppercase; letter-spacing: 0.10em; margin-bottom: 5px; }
+.chk-cat-val {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.chk {
+  background: #0e1526;
+  border: 1px solid #1c2d42;
+  border-radius: 12px;
+  padding: 13px 15px;
+  margin-bottom: 7px;
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  cursor: pointer;
+  transition: opacity .2s;
+  user-select: none;
+}
+.chk:active { opacity: 0.75; }
+.chk.done { opacity: 0.25; border-color: transparent; }
+.chk.done .chk-name { text-decoration: line-through; color: #3a5266; }
+.chkbox {
+  width: 22px; height: 22px;
+  border-radius: 6px;
+  border: 1.5px solid #243650;
+  flex-shrink: 0;
+  margin-top: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #060910;
+  transition: background .18s, border-color .18s;
+}
+.chk.done .chkbox { background: #18b8d4; border-color: #18b8d4; }
+.tick { display: none; font-size: 12px; color: #060910; font-weight: 700; }
+.chk.done .tick { display: block; }
+.chk-body { flex: 1; min-width: 0; }
+.chk-name { font-size: 15px; font-weight: 600; color: #c4d8ec; margin-bottom: 3px; }
+.chk-note { font-size: 12px; color: #3a5266; line-height: 1.45; }
+.chk-price {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 18px;
+  color: #c4d8ec;
+  flex-shrink: 0;
+  padding-top: 1px;
+}
+
+/* colour utility */
+.c-cyan   { color: #3dd4ec; }
+.c-green  { color: #10c484; }
+.c-amber  { color: #eda820; }
+.c-red    { color: #ee7070; }
+.c-purple { color: #8878e0; }
+.c-mid    { color: #6e90ae; }
+
+.fade {
+  position: absolute;
+  bottom: 0; left: 0; right: 0; height: 52px;
+  background: linear-gradient(transparent, #060910);
+  pointer-events: none;
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+
+<div class="hdr">
+  <div>
+    <div class="hdr-brand">SG Relocation</div>
+    <div class="hdr-sub" id="hdr-month">Expense Tracker · May</div>
+  </div>
+  <div class="rate-chip"><div class="live-dot"></div>SGD 1 = RM 3.10</div>
+</div>
+
+<!-- BALANCE BAR -->
+
+<div class="balance-bar">
+  <div>
+    <div class="bb-lbl">Cash Remaining</div>
+    <div class="bb-fig" id="bb-cash">$0</div>
+    <div class="bb-rm" id="bb-rm">≈ RM 0</div>
+  </div>
+  <div class="bb-right">
+    <div class="bb-spent" id="bb-spent">$0 spent</div>
+    <div class="bb-spent-lbl">Total Spent</div>
+    <div class="bb-pct" id="bb-pct">0% of pool</div>
+  </div>
+</div>
+<div class="balance-prog">
+  <div class="bp-track"><div class="bp-fill" id="bb-fill"></div></div>
+</div>
+
+<!-- TABS -->
+
+<div class="tabs">
+  <div class="tab active" onclick="sw('overview')">Overview</div>
+  <div class="tab" onclick="sw('breakdown')">Breakdown</div>
+  <div class="tab" onclick="sw('checklist')">Checklist</div>
+</div>
+
+<div class="content">
+
+  <!-- ═══ OVERVIEW ═══ -->
+
+  <div class="panel active" id="p-overview">
+
+    <div class="sec" style="margin-top:2px">What Is Still Needed</div>
+
+    <div class="req-card">
+      <div class="req-eyebrow">Total Still Required</div>
+      <div class="req-row">
+        <div>
+          <div class="req-fig" id="ov-rem">$0</div>
+          <div class="req-sub" id="ov-rem-sub">across items not yet settled</div>
+        </div>
+        <div class="req-settled">
+          <div class="req-settled-lbl">Settled</div>
+          <div class="req-settled-fig" id="ov-settled">$0</div>
+        </div>
+      </div>
+      <div class="req-prog-meta"><span>Checklist progress</span><span id="ov-pct">0%</span></div>
+      <div class="req-prog-track"><div class="req-prog-fill" id="ov-bar" style="width:0%"></div></div>
+      <div class="req-cats">
+        <div class="req-cat"><div class="req-cat-lbl">Expenses</div><div class="req-cat-val c-red" id="ov-cat-exp">$0</div></div>
+        <div class="req-cat"><div class="req-cat-lbl">Supplies</div><div class="req-cat-val c-purple" id="ov-cat-sup">$0</div></div>
+        <div class="req-cat"><div class="req-cat-lbl">Toiletries</div><div class="req-cat-val c-cyan" id="ov-cat-toi">$0</div></div>
+      </div>
+    </div>
+
+    <div class="sec">Money Summary</div>
+
+    <div class="sum-card">
+      <div class="sum-accent" style="background:#3dd4ec"></div>
+      <div style="padding-left:7px">
+        <div class="sum-name">Total Money In</div>
+        <div class="sum-desc">Dad RM 16,000 + Joe RM 1,500, converted to SGD at 3.10</div>
+      </div>
+      <div class="sum-amt c-cyan">$5,645</div>
+    </div>
+
+    <div class="sum-card">
+      <div class="sum-accent" style="background:#ee7070"></div>
+      <div style="padding-left:7px">
+        <div class="sum-name">Total Spent So Far</div>
+        <div class="sum-desc">All payments made including rent, deposits, setup and flight</div>
+      </div>
+      <div class="sum-amt c-red" id="sum-spent">$0</div>
+    </div>
+
+    <div class="sum-card">
+      <div class="sum-accent" style="background:#eda820"></div>
+      <div style="padding-left:7px">
+        <div class="sum-name">Deposits Placed</div>
+        <div class="sum-desc">Rental security deposit + bank account lock-in amount</div>
+      </div>
+      <div class="sum-amt c-amber">$2,200</div>
+    </div>
+
+    <div class="sum-card">
+      <div class="sum-accent" style="background:#10c484"></div>
+      <div style="padding-left:7px">
+        <div class="sum-name">Cash Still in Hand</div>
+        <div class="sum-desc">Available to spend right now</div>
+      </div>
+      <div class="sum-amt c-green" id="sum-cash">$0</div>
+    </div>
+
+    <div class="sec">Where the Money Went</div>
+    <div class="bar-wrap" id="bars"></div>
+
+  </div>
+
+  <!-- ═══ BREAKDOWN ═══ -->
+
+  <div class="panel" id="p-breakdown">
+
+    <div class="sec">Housing</div>
+    <div class="row-card">
+      <div class="row-accent" style="background:#3dd4ec"></div>
+      <div class="row-body"><div class="row-name">First Month Rent</div><div class="row-desc">Room accommodation in Singapore</div></div>
+      <div class="row-right"><div class="row-amt">$1,200</div><div class="badge b-paid">Paid</div></div>
+    </div>
+    <div class="row-card">
+      <div class="row-accent" style="background:#3dd4ec"></div>
+      <div class="row-body"><div class="row-name">Utilities</div><div class="row-desc">Water, electricity & WiFi — first month</div></div>
+      <div class="row-right"><div class="row-amt">$100</div><div class="badge b-paid">Paid</div></div>
+    </div>
+    <div class="row-card">
+      <div class="row-accent" style="background:#3dd4ec"></div>
+      <div class="row-body"><div class="row-name">Property Agent Fee</div><div class="row-desc">One-time agent service fee for securing the room</div></div>
+      <div class="row-right"><div class="row-amt">$600</div><div class="badge b-paid">Paid</div></div>
+    </div>
+    <div class="subtotal"><div class="sub-lbl">Housing Total</div><div class="sub-val c-mid">$1,900</div></div>
+
+    <div class="sec">Deposits</div>
+    <div class="row-card">
+      <div class="row-accent" style="background:#eda820"></div>
+      <div class="row-body"><div class="row-name">Rental Security Deposit</div><div class="row-desc">Held by landlord upon signing of tenancy</div></div>
+      <div class="row-right"><div class="row-amt">$1,200</div><div class="badge b-deposit">Deposit</div></div>
+    </div>
+    <div class="row-card">
+      <div class="row-accent" style="background:#eda820"></div>
+      <div class="row-body"><div class="row-name">Bank Account Deposit</div><div class="row-desc">Seeds SG account for financial operations</div></div>
+      <div class="row-right"><div class="row-amt">$1,000</div><div class="badge b-deposit">Deposit</div></div>
+    </div>
+    <div class="subtotal"><div class="sub-lbl">Deposits Total</div><div class="sub-val c-amber">$2,200</div></div>
+
+    <div class="sec">Room Setup</div>
+    <div class="row-card">
+      <div class="row-accent" style="background:#8878e0"></div>
+      <div class="row-body"><div class="row-name">Mattress</div><div class="row-desc">One-off purchase</div></div>
+      <div class="row-right"><div class="row-amt">$200</div><div class="badge b-paid">Paid</div></div>
+    </div>
+    <div class="row-card">
+      <div class="row-accent" style="background:#8878e0"></div>
+      <div class="row-body"><div class="row-name">Pillow</div><div class="row-desc">One-off purchase</div></div>
+      <div class="row-right"><div class="row-amt">$40</div><div class="badge b-paid">Paid</div></div>
+    </div>
+    <div class="row-card">
+      <div class="row-accent" style="background:#8878e0"></div>
+      <div class="row-body"><div class="row-name">Bed Sheets</div><div class="row-desc">One-off purchase</div></div>
+      <div class="row-right"><div class="row-amt">$100</div><div class="badge b-paid">Paid</div></div>
+    </div>
+    <div class="subtotal"><div class="sub-lbl">Room Setup Total</div><div class="sub-val c-mid">$340</div></div>
+
+    <div class="sec">Daily Living</div>
+
+    <div class="row-card has-prog">
+      <div class="row-top">
+        <div class="row-body" style="padding-left:0">
+          <div class="row-name">Food &amp; Meals</div>
+          <div class="row-desc" id="bd-food-desc">Loading...</div>
+        </div>
+        <div class="row-right"><div class="row-amt" id="bd-food-amt">$0</div><div class="badge b-paid">Paid</div></div>
+      </div>
+      <div class="mini-prog">
+        <div class="mini-lbl" id="bd-food-lbl"><span>...</span><span>0%</span></div>
+        <div class="mini-track"><div class="mini-fill" id="bd-food-fill" style="width:0%;background:linear-gradient(90deg,#065f46,#10c484)"></div></div>
+      </div>
+    </div>
+
+    <div class="row-card has-prog">
+      <div class="row-top">
+        <div class="row-body" style="padding-left:0">
+          <div class="row-name">Public Transport</div>
+          <div class="row-desc" id="bd-transport-desc">Loading...</div>
+        </div>
+        <div class="row-right"><div class="row-amt" id="bd-transport-amt">$0</div><div class="badge b-paid">Paid</div></div>
+      </div>
+      <div class="mini-prog">
+        <div class="mini-lbl" id="bd-transport-lbl"><span>...</span><span>0%</span></div>
+        <div class="mini-track"><div class="mini-fill" id="bd-transport-fill" style="width:0%;background:linear-gradient(90deg,#0c5070,#3dd4ec)"></div></div>
+      </div>
+    </div>
+
+    <div class="subtotal"><div class="sub-lbl">Daily Living (so far)</div><div class="sub-val c-mid" id="bd-daily-sub">$0</div></div>
+
+    <div class="sec">Travel</div>
+    <div class="row-card">
+      <div class="row-accent" style="background:#8878e0"></div>
+      <div class="row-body"><div class="row-name">Flight Ticket (KL → Singapore)</div><div class="row-desc">Initial relocation flight — AirAsia / Malindo</div></div>
+      <div class="row-right"><div class="row-amt">RM 500</div><div class="badge b-rm">≈ $161</div></div>
+    </div>
+    <div class="subtotal"><div class="sub-lbl">Travel Total</div><div class="sub-val c-mid">RM 500</div></div>
+
+    <div class="grand">
+      <div class="grand-lbl">Grand Total Spent</div>
+      <div class="grand-amt" id="bd-grand-amt">$0</div>
+      <div class="grand-sub">Includes $600 agent fee and RM 500 flight ticket.<br>RM converted at 3.10 rate.</div>
+    </div>
+
+  </div>
+
+  <!-- ═══ CHECKLIST ═══ -->
+
+  <div class="panel" id="p-checklist">
+
+    <div class="chk-banner">
+      <div class="chk-top">
+        <div>
+          <div class="chk-lbl">Total Still Required</div>
+          <div class="chk-fig" id="chk-rem">$0</div>
+          <div class="chk-fig-sub" id="chk-rem-sub">...</div>
+        </div>
+        <div class="chk-right">
+          <div class="chk-settled-lbl">Settled</div>
+          <div class="chk-settled-fig" id="chk-settled">$0</div>
+          <div class="chk-pill" id="chk-count">0 done</div>
+        </div>
+      </div>
+      <div class="chk-prog-meta"><span>Overall progress</span><span id="chk-pct">0%</span></div>
+      <div class="chk-prog-track"><div class="chk-prog-fill" id="chk-bar" style="width:0%"></div></div>
+      <div class="chk-cats">
+        <div class="chk-cat"><div class="chk-cat-lbl">Expenses</div><div class="chk-cat-val c-red" id="chk-cat-exp">$0</div></div>
+        <div class="chk-cat"><div class="chk-cat-lbl">Supplies</div><div class="chk-cat-val c-purple" id="chk-cat-sup">$0</div></div>
+        <div class="chk-cat"><div class="chk-cat-lbl">Toiletries</div><div class="chk-cat-val c-cyan" id="chk-cat-toi">$0</div></div>
+      </div>
+    </div>
+
+    <div class="sec">Pending Expenses</div>
+
+    <div class="chk" onclick="toggle(this)" data-cat="expenses" data-price="0" id="chk-food"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Food &amp; Meals — Rest of May</div><div class="chk-note" id="chk-food-note">Loading...</div></div><div class="chk-price" id="chk-food-price">$0</div></div>
+    <div class="chk" onclick="toggle(this)" data-cat="expenses" data-price="0" id="chk-transport"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Transport — Rest of May</div><div class="chk-note" id="chk-transport-note">Loading...</div></div><div class="chk-price" id="chk-transport-price">$0</div></div>
+    
+    <!-- AIA and Work Attire are now pre-checked (done class added) -->
+    <div class="chk done" onclick="toggle(this)" data-cat="expenses" data-price="200"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">AIA Insurance Premium</div><div class="chk-note">Monthly medical and life coverage payment</div></div><div class="chk-price">$200</div></div>
+    <div class="chk done" onclick="toggle(this)" data-cat="expenses" data-price="150"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Work Attire &amp; Appearance</div><div class="chk-note">Appropriate clothing for the job site — first impressions matter</div></div><div class="chk-price">$150</div></div>
+    
+    <div class="chk" onclick="toggle(this)" data-cat="expenses" data-price="200"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Emergency Buffer</div><div class="chk-note">Set aside for unexpected costs — medical, admin, or delays</div></div><div class="chk-price">$200</div></div>
+    <div class="chk" onclick="toggle(this)" data-cat="expenses" data-price="140"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Income Tax Reserve</div><div class="chk-note">Set aside for IRAS tax filing at end of the year</div></div><div class="chk-price">$140</div></div>
+    <div class="chk" onclick="toggle(this)" data-cat="expenses" data-price="50"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Phone Bill</div><div class="chk-note">Singapore SIM card — Circles.Life or Giga</div></div><div class="chk-price">$50</div></div>
+    <div class="chk" onclick="toggle(this)" data-cat="expenses" data-price="80"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Personal &amp; Miscellaneous</div><div class="chk-note">Medicine, haircut, and other small daily essentials</div></div><div class="chk-price">$80</div></div>
+
+    <div class="sec">Cleaning &amp; Household Supplies</div>
+
+    <div class="chk done" onclick="toggle(this)" data-cat="supplies" data-price="12"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Broom &amp; Dustpan Set</div><div class="chk-note">For sweeping the floor daily · Daiso or FairPrice</div></div><div class="chk-price">$12</div></div>
+    <div class="chk done" onclick="toggle(this)" data-cat="supplies" data-price="20"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Mop or Floor Wiper</div><div class="chk-note">Spin mop or flat wiper for wet cleaning</div></div><div class="chk-price">$20</div></div>
+    <div class="chk done" onclick="toggle(this)" data-cat="supplies" data-price="14"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Laundry Detergent</div><div class="chk-note">Dynamo or Breeze · 2kg pack</div></div><div class="chk-price">$14</div></div>
+    <div class="chk done" onclick="toggle(this)" data-cat="supplies" data-price="10"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Fabric Softener</div><div class="chk-note">Comfort or Downy · 1.5 litre</div></div><div class="chk-price">$10</div></div>
+    <div class="chk done" onclick="toggle(this)" data-cat="supplies" data-price="8"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Floor Cleaning Liquid</div><div class="chk-note">Dettol or Magiclean · antibacterial formula</div></div><div class="chk-price">$8</div></div>
+    <div class="chk done" onclick="toggle(this)" data-cat="supplies" data-price="5"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Dishwashing Liquid</div><div class="chk-note">Sunlight or Mama Lemon · 500ml bottle</div></div><div class="chk-price">$5</div></div>
+    <div class="chk done" onclick="toggle(this)" data-cat="supplies" data-price="22"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Padlock</div><div class="chk-note">To secure the room door · Yale or ABUS brand</div></div><div class="chk-price">$22</div></div>
+    <div class="chk" onclick="toggle(this)" data-cat="supplies" data-price="8"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Tissue Box (4-pack)</div><div class="chk-note">Kleenex or Scott · for everyday use</div></div><div class="chk-price">$8</div></div>
+    <div class="chk done" onclick="toggle(this)" data-cat="supplies" data-price="15"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Rubbish Bin</div><div class="chk-note">10–15 litre with pedal or swing lid</div></div><div class="chk-price">$15</div></div>
+    <div class="chk done" onclick="toggle(this)" data-cat="supplies" data-price="6"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Rubbish Bags (2 rolls)</div><div class="chk-note">Medium size · for daily disposal</div></div><div class="chk-price">$6</div></div>
+    <div class="chk" onclick="toggle(this)" data-cat="supplies" data-price="20"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Power Strip / Extension Cord</div><div class="chk-note">3-pin Singapore plug · at least 4 ports</div></div><div class="chk-price">$20</div></div>
+    <div class="chk done" onclick="toggle(this)" data-cat="supplies" data-price="8"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Clothes Hangers (10-pack)</div><div class="chk-note">Slim velvet or plastic hangers for the wardrobe</div></div><div class="chk-price">$8</div></div>
+    <div class="chk" onclick="toggle(this)" data-cat="supplies" data-price="12"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Laundry Bag or Basket</div><div class="chk-note">Collapsible or hard basket for dirty clothes</div></div><div class="chk-price">$12</div></div>
+    <div class="chk done" onclick="toggle(this)" data-cat="supplies" data-price="25"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Bath Towels (×2)</div><div class="chk-note">Medium weight · one for use, one spare</div></div><div class="chk-price">$25</div></div>
+
+    <div class="sec">Toiletries</div>
+
+    <div class="chk done" onclick="toggle(this)" data-cat="toiletries" data-price="10"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Toilet Paper (12-roll pack)</div><div class="chk-note">Scott or Paseo · 3-ply recommended</div></div><div class="chk-price">$10</div></div>
+    
+    <!-- Shampoo & Body Wash pre-checked (done class added) -->
+    <div class="chk done" onclick="toggle(this)" data-cat="toiletries" data-price="10"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Hair Shampoo</div><div class="chk-note">Head &amp; Shoulders or Dove · 400ml bottle</div></div><div class="chk-price">$10</div></div>
+    <div class="chk done" onclick="toggle(this)" data-cat="toiletries" data-price="9"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Body Wash / Shower Gel</div><div class="chk-note">Dove or Lifebuoy · 500ml pump bottle</div></div><div class="chk-price">$9</div></div>
+    
+    <div class="chk done" onclick="toggle(this)" data-cat="toiletries" data-price="8"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Toothbrush &amp; Toothpaste</div><div class="chk-note">Colgate or Oral-B · bundle set</div></div><div class="chk-price">$8</div></div>
+    <div class="chk" onclick="toggle(this)" data-cat="toiletries" data-price="6"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Deodorant</div><div class="chk-note">Rexona or Dove · roll-on or spray</div></div><div class="chk-price">$6</div></div>
+    <div class="chk done" onclick="toggle(this)" data-cat="toiletries" data-price="12"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Face Wash / Cleanser</div><div class="chk-note">Cetaphil or Neutrogena · 150ml tube</div></div><div class="chk-price">$12</div></div>
+    <div class="chk" onclick="toggle(this)" data-cat="toiletries" data-price="15"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Razor or Trimmer</div><div class="chk-note">Gillette disposable pack or a basic electric trimmer</div></div><div class="chk-price">$15</div></div>
+
+  </div>
+
+  <div class="fade"></div>
+</div>
+
+<script>
+function sw(name) {
+  const names = ['overview','breakdown','checklist'];
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', names[i]===name));
+  names.forEach(n => document.getElementById('p-'+n).classList.toggle('active', n===name));
+}
+
+// Global state computation variables
+let elapsedDays = 0;
+let remainingDays = 0;
+let foodSpent = 0;
+let transportSpent = 0;
+
+function calculateTime() {
+  // Get current time in UTC
+  const now = new Date();
+  const utcMs = now.getTime() + (now.getTimezoneOffset() * 60000);
+  
+  // Convert strictly to Singapore Time (UTC + 8) to calculate the 9:00 PM rollover accurately 
+  const sgMs = utcMs + (3600000 * 8);
+  
+  // Set start date to May 2nd of the current SG year at 21:00 SGT (which is 13:00 UTC)
+  const sgYear = new Date(sgMs).getUTCFullYear();
+  document.getElementById('hdr-month').textContent = `Expense Tracker · May ${sgYear}`;
+  const startMs = Date.UTC(sgYear, 4, 2, 13, 0, 0); // Month 4 is May
+  
+  // Elapsed days formula: every time SG passes 21:00 from May 2nd, the day count increments
+  elapsedDays = Math.floor((sgMs - startMs) / 86400000) + 1;
+  
+  if (elapsedDays < 0) elapsedDays = 0;
+  if (elapsedDays > 30) elapsedDays = 30; // Max 30 days in the May 2 - May 31 window
+  
+  remainingDays = 30 - elapsedDays;
+  foodSpent = elapsedDays * 40;
+  transportSpent = elapsedDays * 4;
+  const foodRemaining = remainingDays * 40;
+  const transportRemaining = remainingDays * 4;
+
+  // Inject dynamic properties into HTML elements before recalculating
+  const elFood = document.getElementById('chk-food');
+  elFood.dataset.price = foodRemaining;
+  document.getElementById('chk-food-price').textContent = `$${foodRemaining}`;
+  document.getElementById('chk-food-note').textContent = `${remainingDays} remaining days × $40 per day at hawker centres`;
+
+  const elTransport = document.getElementById('chk-transport');
+  elTransport.dataset.price = transportRemaining;
+  document.getElementById('chk-transport-price').textContent = `$${transportRemaining}`;
+  document.getElementById('chk-transport-note').textContent = `Estimated remaining trips via MRT & Bus on SimplyGo (${remainingDays} days)`;
+}
+
+// Master recalculation for the entire app based on dynamically bound data attributes
+function recalc() {
+  const items = document.querySelectorAll('.chk');
+  let n = 0, settled = 0, rem = 0;
+  let catRem = { expenses: 0, supplies: 0, toiletries: 0 };
+  let catSet = { expenses: 0, supplies: 0, toiletries: 0 };
+
+  // Loop through HTML checkboxes using their embedded dataset
+  items.forEach(it => {
+    const price = parseFloat(it.dataset.price) || 0;
+    const cat = it.dataset.cat;
+    if (it.classList.contains('done')) {
+      n++;
+      settled += price;
+      if(cat) catSet[cat] += price;
+    } else {
+      rem += price;
+      if(cat) catRem[cat] += price;
+    }
+  });
+
+  const totalChecklist = rem + settled;
+  const pct = totalChecklist > 0 ? Math.round((settled / totalChecklist) * 100) : 0;
+  const left = items.length - n;
+  const leftTxt = `across ${left} item${left !== 1 ? 's' : ''} not yet settled`;
+
+  // 1. Update Checklist & Overview Banners
+  ['chk', 'ov'].forEach(prefix => {
+    document.getElementById(`${prefix}-rem`).textContent = `$${rem.toLocaleString()}`;
+    document.getElementById(`${prefix}-rem-sub`).textContent = leftTxt;
+    document.getElementById(`${prefix}-settled`).textContent = `$${settled.toLocaleString()}`;
+    document.getElementById(`${prefix}-pct`).textContent = pct + '%';
+    document.getElementById(`${prefix}-bar`).style.width = pct + '%';
+    
+    document.getElementById(`${prefix}-cat-exp`).textContent = `$${catRem.expenses.toLocaleString()}`;
+    document.getElementById(`${prefix}-cat-sup`).textContent = `$${catRem.supplies.toLocaleString()}`;
+    document.getElementById(`${prefix}-cat-toi`).textContent = `$${catRem.toiletries.toLocaleString()}`;
+  });
+  document.getElementById('chk-count').textContent = `${n} / ${items.length} done`;
+
+  // 2. Global Breakdown Totals (Single Source of Truth)
+  const baseSpent = 4601; // Fixed known expenses (Rent, Agent, Flight, etc.)
+  const totalSpent = baseSpent + foodSpent + transportSpent + settled;
+  // Updated moneyIn variable reflecting 17500 RM / 3.10
+  const moneyIn = 5645;
+  const cashRemaining = moneyIn - totalSpent;
+
+  // 3. Update Balance Bar
+  document.getElementById('bb-cash').textContent = `$${cashRemaining.toLocaleString()}`;
+  document.getElementById('bb-rm').textContent = `≈ RM ${(cashRemaining * 3.1).toLocaleString(undefined, {maximumFractionDigits:0})}`;
+  document.getElementById('bb-spent').textContent = `$${totalSpent.toLocaleString()} spent`;
+  const spendPct = Math.round((totalSpent / moneyIn) * 100);
+  document.getElementById('bb-pct').textContent = `${spendPct}% of pool`;
+  document.getElementById('bb-fill').style.width = `${spendPct}%`;
+
+  // 4. Update Overview Summary Cards & Grand Total
+  document.getElementById('sum-spent').textContent = `$${totalSpent.toLocaleString()}`;
+  document.getElementById('sum-cash').textContent = `$${cashRemaining.toLocaleString()}`;
+  document.getElementById('bd-grand-amt').textContent = `$${totalSpent.toLocaleString()}`;
+
+  // 5. Update Breakdown Dynamic Daily Panels
+  document.getElementById('bd-food-amt').textContent = `$${foodSpent}`;
+  document.getElementById('bd-food-lbl').innerHTML = `<span>$${foodSpent} used of $1,200 May budget</span><span>${Math.round(foodSpent/1200*100)}%</span>`;
+  document.getElementById('bd-food-fill').style.width = `${Math.round(foodSpent/1200*100)}%`;
+  document.getElementById('bd-food-desc').textContent = `$40 per day at hawker centres — ${elapsedDays} days so far`;
+
+  document.getElementById('bd-transport-amt').textContent = `$${transportSpent}`;
+  document.getElementById('bd-transport-lbl').innerHTML = `<span>$${transportSpent} used of $120 May budget</span><span>${Math.round(transportSpent/120*100)}%</span>`;
+  document.getElementById('bd-transport-fill').style.width = `${Math.round(transportSpent/120*100)}%`;
+  document.getElementById('bd-transport-desc').textContent = `MRT & Bus via SimplyGo — approx $4/day — ${elapsedDays} days so far`;
+
+  document.getElementById('bd-daily-sub').textContent = `$${foodSpent + transportSpent}`;
+
+  // 6. Draw Bars Chart dynamically 
+  const barsData = [
+    { label:'Rent',         amt:1200, color:'#3dd4ec' },
+    { label:'Agent Fee',    amt: 600, color:'#3dd4ec' },
+    { label:'Sec. Deposit', amt:1200, color:'#eda820' },
+    { label:'Bank Deposit', amt:1000, color:'#eda820' },
+    { label:'Room Setup',   amt: 340, color:'#8878e0' },
+    { label:'Food',         amt: foodSpent, color:'#10c484' },
+    { label:'Utilities',    amt: 100, color:'#3dd4ec' },
+    { label:'Flight',       amt: 161, color:'#8878e0' },
+    { label:'Transport',    amt: transportSpent, color:'#10c484' }
+  ];
+  
+  // Inject checklist categories into bars if settled
+  if (catSet.toiletries > 0) barsData.push({ label:'Toiletries', amt: catSet.toiletries, color:'#3dd4ec' });
+  if (catSet.supplies > 0) barsData.push({ label:'Supplies', amt: catSet.supplies, color:'#8878e0' });
+  if (catSet.expenses > 0) barsData.push({ label:'Other Exp', amt: catSet.expenses, color:'#10c484' });
+
+  barsData.sort((a,b) => b.amt - a.amt); // Sort visually
+
+  const bc = document.getElementById('bars');
+  bc.innerHTML = '';
+  barsData.forEach(function(b) {
+    const pctBar = Math.max(4, Math.round(b.amt / 1200 * 100));
+    bc.innerHTML += `<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+      <div style="width:88px;font-size:11px;color:#6e90ae;font-weight:500;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${b.label}</div>
+      <div style="flex:1;height:4px;background:#172135;border-radius:3px;overflow:hidden;">
+        <div style="width:${pctBar}%;height:100%;background:${b.color};border-radius:3px;box-shadow:0 0 5px ${b.color}55"></div>
+      </div>
+      <div style="width:44px;text-align:right;font-family:Georgia,serif;font-size:13px;color:#6e90ae;flex-shrink:0">$${b.amt}</div>
+    </div>`;
+  });
+}
+
+// Click handler for checklist items
+function toggle(el) { 
+  el.classList.toggle('done'); 
+  recalc(); 
+}
+
+// Initialization Sequence
+calculateTime();
+recalc();
+
+</script>
+</body>
+</html>
