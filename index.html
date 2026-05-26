@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline';">
 <title>SG Relocation — Expense Tracker</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
@@ -52,7 +51,6 @@ body {
   overflow: hidden;
 }
 
-/* ── HEADER ─────────────────────────────── */
 .hdr {
   background: #0a0f1c;
   border-bottom: 1px solid #1c2d42;
@@ -106,7 +104,6 @@ body {
 }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.15} }
 
-/* ── BALANCE BAR ────────────────────────── */
 .balance-bar {
   background: #0a0f1c;
   border-bottom: 1px solid #1c2d42;
@@ -170,7 +167,6 @@ body {
 .bp-track { height: 3px; background: #172135; border-radius: 3px; overflow: hidden; }
 .bp-fill  { height: 100%; width: 0%; background: linear-gradient(90deg, #0c4f70, #3dd4ec); border-radius: 3px; box-shadow: 0 0 7px rgba(61,212,236,0.20); transition: width 0.4s ease; }
 
-/* ── TABS ───────────────────────────────── */
 .tabs {
   display: flex;
   background: #0a0f1c;
@@ -193,13 +189,11 @@ body {
 }
 .tab.active { color: #3dd4ec; border-bottom-color: #18b8d4; }
 
-/* ── PANELS ─────────────────────────────── */
 .content { flex: 1; overflow: hidden; position: relative; }
 .panel { display: none; height: 100%; overflow-y: auto; padding: 14px 15px 88px; scrollbar-width: none; }
 .panel::-webkit-scrollbar { display: none; }
 .panel.active { display: block; }
 
-/* ── SECTION LABEL ──────────────────────── */
 .sec {
   font-size: 9.5px;
   font-weight: 600;
@@ -214,7 +208,6 @@ body {
 .sec:first-child { margin-top: 2px; }
 .sec::after { content: ''; flex: 1; height: 1px; background: #1c2d42; }
 
-/* ═══ OVERVIEW ═══════════════════════════ */
 .req-card {
   background: #0e1526;
   border: 1px solid #243650;
@@ -306,7 +299,6 @@ body {
 
 .bar-wrap { background: #0e1526; border: 1px solid #1c2d42; border-radius: 12px; padding: 17px 16px; }
 
-/* ═══ BREAKDOWN ══════════════════════════ */
 .row-card {
   background: #0e1526;
   border: 1px solid #1c2d42;
@@ -332,6 +324,7 @@ body {
   color: #c4d8ec;
   line-height: 1;
 }
+
 .badge {
   display: inline-block;
   font-size: 9px;
@@ -393,7 +386,6 @@ body {
 }
 .grand-sub { font-size: 11.5px; color: #3a5266; margin-top: 6px; line-height: 1.5; }
 
-/* ═══ CHECKLIST ══════════════════════════ */
 .chk-banner {
   background: #0e1526;
   border: 1px solid #243650;
@@ -499,7 +491,6 @@ body {
   padding-top: 1px;
 }
 
-/* colour utility */
 .c-cyan   { color: #3dd4ec; }
 .c-green  { color: #10c484; }
 .c-amber  { color: #eda820; }
@@ -517,18 +508,17 @@ body {
 </head>
 <body>
 
-<!-- HEADER -->
 
+<!-- HEADER -->
 <div class="hdr">
   <div>
     <div class="hdr-brand">SG Relocation</div>
-    <div class="hdr-sub" id="hdr-month">Expense Tracker · May</div>
+    <div class="hdr-sub" id="hdr-month">Expense Tracker · May &amp; June</div>
   </div>
-  <div class="rate-chip"><div class="live-dot"></div>SGD 1 = RM 3.10</div>
+
 </div>
 
 <!-- BALANCE BAR -->
-
 <div class="balance-bar">
   <div>
     <div class="bb-lbl">Cash Remaining</div>
@@ -546,7 +536,6 @@ body {
 </div>
 
 <!-- TABS -->
-
 <div class="tabs">
   <div class="tab active" onclick="sw('overview')">Overview</div>
   <div class="tab" onclick="sw('breakdown')">Breakdown</div>
@@ -556,7 +545,6 @@ body {
 <div class="content">
 
   <!-- ═══ OVERVIEW ═══ -->
-
   <div class="panel active" id="p-overview">
 
     <div class="sec" style="margin-top:2px">What Is Still Needed</div>
@@ -588,9 +576,9 @@ body {
       <div class="sum-accent" style="background:#3dd4ec"></div>
       <div style="padding-left:7px">
         <div class="sum-name">Total Money In</div>
-        <div class="sum-desc">Dad RM 17,000 + Joe RM 1,500, converted to SGD at 3.10</div>
+        <div class="sum-desc">Dad RM 27,000 + Joe RM 1,500, converted to SGD at 3.189</div>
       </div>
-      <div class="sum-amt c-cyan">$5,968</div>
+      <div class="sum-amt c-cyan">$9,194</div>
     </div>
 
     <div class="sum-card">
@@ -626,26 +614,35 @@ body {
   </div>
 
   <!-- ═══ BREAKDOWN ═══ -->
-
   <div class="panel" id="p-breakdown">
 
     <div class="sec">Housing</div>
     <div class="row-card">
       <div class="row-accent" style="background:#3dd4ec"></div>
-      <div class="row-body"><div class="row-name">First Month Rent</div><div class="row-desc">Room accommodation in Singapore</div></div>
+      <div class="row-body"><div class="row-name">First Month Rent (May)</div><div class="row-desc">Room accommodation in Singapore</div></div>
       <div class="row-right"><div class="row-amt">$1,200</div><div class="badge b-paid">Paid</div></div>
     </div>
     <div class="row-card">
       <div class="row-accent" style="background:#3dd4ec"></div>
-      <div class="row-body"><div class="row-name">Utilities</div><div class="row-desc">Water, electricity & WiFi — first month</div></div>
+      <div class="row-body"><div class="row-name">Utilities (May)</div><div class="row-desc">Water, electricity & WiFi — first month</div></div>
       <div class="row-right"><div class="row-amt">$100</div><div class="badge b-paid">Paid</div></div>
+    </div>
+    <div class="row-card">
+      <div class="row-accent" style="background:#3dd4ec"></div>
+      <div class="row-body"><div class="row-name">June Rent</div><div class="row-desc">Prepaid second month room accommodation</div></div>
+      <div class="row-right"><div class="row-amt">$1,200</div><div class="badge b-paid">Paid</div></div>
+    </div>
+    <div class="row-card">
+      <div class="row-accent" style="background:#3dd4ec"></div>
+      <div class="row-body"><div class="row-name">June Utilities</div><div class="row-desc">Prepaid water, electricity & WiFi</div></div>
+      <div class="row-right"><div class="row-amt">$120</div><div class="badge b-paid">Paid</div></div>
     </div>
     <div class="row-card">
       <div class="row-accent" style="background:#3dd4ec"></div>
       <div class="row-body"><div class="row-name">Property Agent Fee</div><div class="row-desc">One-time agent service fee for securing the room</div></div>
       <div class="row-right"><div class="row-amt">$600</div><div class="badge b-paid">Paid</div></div>
     </div>
-    <div class="subtotal"><div class="sub-lbl">Housing Total</div><div class="sub-val c-mid">$1,900</div></div>
+    <div class="subtotal"><div class="sub-lbl">Housing Total</div><div class="sub-val c-mid" id="bd-housing-sub">$0</div></div>
 
     <div class="sec">Deposits</div>
     <div class="row-card">
@@ -716,7 +713,17 @@ body {
       <div class="row-body"><div class="row-name">Flight Ticket (KL → Singapore)</div><div class="row-desc">Initial relocation flight — AirAsia / Malindo</div></div>
       <div class="row-right"><div class="row-amt">RM 500</div><div class="badge b-rm">≈ $161</div></div>
     </div>
-    <div class="subtotal"><div class="sub-lbl">Travel Total</div><div class="sub-val c-mid">RM 500</div></div>
+    <div class="row-card">
+      <div class="row-accent" style="background:#8878e0"></div>
+      <div class="row-body"><div class="row-name">Bus Ride (Singapore → MY, 16 May)</div><div class="row-desc">Cross-border return travel weekend ticket</div></div>
+      <div class="row-right"><div class="row-amt">RM 130</div><div class="badge b-rm">≈ $42</div></div>
+    </div>
+    <div class="row-card">
+      <div class="row-accent" style="background:#8878e0"></div>
+      <div class="row-body"><div class="row-name">Bus Ride (MY → Singapore, 17 May)</div><div class="row-desc">Cross-border returning bus travel</div></div>
+      <div class="row-right"><div class="row-amt">RM 90</div><div class="badge b-rm">≈ $29</div></div>
+    </div>
+    <div class="subtotal"><div class="sub-lbl">Travel Total</div><div class="sub-val c-mid">RM 720</div></div>
 
     <!-- DYNAMIC CHECKLIST INJECTIONS -->
     <div id="bd-dynamic-list"></div>
@@ -724,13 +731,12 @@ body {
     <div class="grand">
       <div class="grand-lbl">Grand Total Spent</div>
       <div class="grand-amt" id="bd-grand-amt">$0</div>
-      <div class="grand-sub">Includes $600 agent fee and RM 500 flight ticket.<br>RM converted at 3.10 rate.</div>
+      <div class="grand-sub">Includes June rent &amp; utilities prepaid, $600 agent fee, and RM 720 travel costs.<br>RM converted at 3.189 rate.</div>
     </div>
 
   </div>
 
   <!-- ═══ CHECKLIST ═══ -->
-
   <div class="panel" id="p-checklist">
 
     <div class="chk-banner">
@@ -759,14 +765,21 @@ body {
 
     <div class="chk" onclick="toggle(this)" data-cat="expenses" data-price="0" id="chk-food"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Food &amp; Meals — Rest of May</div><div class="chk-note" id="chk-food-note">Loading...</div></div><div class="chk-price" id="chk-food-price">$0</div></div>
     <div class="chk" onclick="toggle(this)" data-cat="expenses" data-price="0" id="chk-transport"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Transport — Rest of May</div><div class="chk-note" id="chk-transport-note">Loading...</div></div><div class="chk-price" id="chk-transport-price">$0</div></div>
-    
+
+    <!-- Income Tax Reserve: $200, pre-checked as done (set aside, not counted as available cash) -->
+    <div class="chk done" onclick="toggle(this)" data-cat="expenses" data-price="200"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Income Tax Reserve</div><div class="chk-note">Set aside for annual tax obligations — do not touch</div></div><div class="chk-price">$200</div></div>
+
+    <!-- Emergency Buffer: $200, pre-checked as done (set aside, not counted as available cash) -->
+    <div class="chk done" onclick="toggle(this)" data-cat="expenses" data-price="200"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Emergency Buffer</div><div class="chk-note">Safety net for unforeseen costs — locked away, pretend it doesn't exist</div></div><div class="chk-price">$200</div></div>
+
+    <div class="chk done" onclick="toggle(this)" data-cat="expenses" data-price="32"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Laundry Dryer (4 Weeks)</div><div class="chk-note">Recurring weekly cost ($8/week) for 4 weeks</div></div><div class="chk-price">$32</div></div>
+
     <div class="chk done" onclick="toggle(this)" data-cat="expenses" data-price="18"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Grab to Work (10 May)</div><div class="chk-note">Alternative to public transport for this day</div></div><div class="chk-price">$18</div></div>
     <div class="chk done" onclick="toggle(this)" data-cat="expenses" data-price="200"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">AIA Insurance Premium</div><div class="chk-note">Monthly medical and life coverage payment</div></div><div class="chk-price">$200</div></div>
     <div class="chk done" onclick="toggle(this)" data-cat="expenses" data-price="150"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Work Attire &amp; Appearance</div><div class="chk-note">Appropriate clothing for the job site — first impressions matter</div></div><div class="chk-price">$150</div></div>
-    
-    <div class="chk" onclick="toggle(this)" data-cat="expenses" data-price="200"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Emergency Buffer</div><div class="chk-note">Set aside for unexpected costs — medical, admin, or delays</div></div><div class="chk-price">$200</div></div>
-    <div class="chk" onclick="toggle(this)" data-cat="expenses" data-price="140"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Income Tax Reserve</div><div class="chk-note">Set aside for IRAS tax filing at end of the year</div></div><div class="chk-price">$140</div></div>
-    <div class="chk done" onclick="toggle(this)" data-cat="expenses" data-price="50"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Phone Bill</div><div class="chk-note">Singapore SIM card — Circles.Life or Giga</div></div><div class="chk-price">$50</div></div>
+
+    <!-- Singtel Phone Bill Settled -->
+    <div class="chk done" onclick="toggle(this)" data-cat="expenses" data-price="50" id="chk-phone"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Singtel Phone Bill</div><div class="chk-note">Singapore SIM Card — monthly prepaid/postpaid plan</div></div><div class="chk-price">$50</div></div>
     <div class="chk" onclick="toggle(this)" data-cat="expenses" data-price="80"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Personal &amp; Miscellaneous</div><div class="chk-note">Medicine, haircut, and other small daily essentials</div></div><div class="chk-price">$80</div></div>
 
     <div class="sec">Cleaning &amp; Household Supplies</div>
@@ -778,222 +791,254 @@ body {
     <div class="chk done" onclick="toggle(this)" data-cat="supplies" data-price="8"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Floor Cleaning Liquid</div><div class="chk-note">Dettol or Magiclean · antibacterial formula</div></div><div class="chk-price">$8</div></div>
     <div class="chk done" onclick="toggle(this)" data-cat="supplies" data-price="5"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Dishwashing Liquid</div><div class="chk-note">Sunlight or Mama Lemon · 500ml bottle</div></div><div class="chk-price">$5</div></div>
     <div class="chk done" onclick="toggle(this)" data-cat="supplies" data-price="22"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Padlock</div><div class="chk-note">To secure the room door · Yale or ABUS brand</div></div><div class="chk-price">$22</div></div>
-    <div class="chk" onclick="toggle(this)" data-cat="supplies" data-price="8"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Tissue Box (4-pack)</div><div class="chk-note">Kleenex or Scott · for everyday use</div></div><div class="chk-price">$8</div></div>
-    <div class="chk done" onclick="toggle(this)" data-cat="supplies" data-price="15"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Rubbish Bin</div><div class="chk-note">10–15 litre with pedal or swing lid</div></div><div class="chk-price">$15</div></div>
-    <div class="chk done" onclick="toggle(this)" data-cat="supplies" data-price="6"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Rubbish Bags (2 rolls)</div><div class="chk-note">Medium size · for daily disposal</div></div><div class="chk-price">$6</div></div>
-    <div class="chk" onclick="toggle(this)" data-cat="supplies" data-price="20"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Power Strip / Extension Cord</div><div class="chk-note">3-pin Singapore plug · at least 4 ports</div></div><div class="chk-price">$20</div></div>
-    <div class="chk done" onclick="toggle(this)" data-cat="supplies" data-price="8"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Clothes Hangers (10-pack)</div><div class="chk-note">Slim velvet or plastic hangers for the wardrobe</div></div><div class="chk-price">$8</div></div>
-    <div class="chk" onclick="toggle(this)" data-cat="supplies" data-price="12"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Laundry Bag or Basket</div><div class="chk-note">Collapsible or hard basket for dirty clothes</div></div><div class="chk-price">$12</div></div>
-    <div class="chk done" onclick="toggle(this)" data-cat="supplies" data-price="25"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Bath Towels (×2)</div><div class="chk-note">Medium weight · one for use, one spare</div></div><div class="chk-price">$25</div></div>
+    <div class="chk done" onclick="toggle(this)" data-cat="supplies" data-price="8"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Tissue Box (4-pack)</div><div class="chk-note">Kleenex or Scott · for everyday use</div></div><div class="chk-price">$8</div></div>
+    <div class="chk" onclick="toggle(this)" data-cat="supplies" data-price="4"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Trash Bags</div><div class="chk-note">Small, medium rolls for room and bathroom bins</div></div><div class="chk-price">$4</div></div>
+    <div class="chk" onclick="toggle(this)" data-cat="supplies" data-price="5"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Dish Sponges &amp; Cloths</div><div class="chk-note">Scotch-Brite pads &amp; microfiber cloths</div></div><div class="chk-price">$5</div></div>
+    <div class="chk" onclick="toggle(this)" data-cat="supplies" data-price="12"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Hangers (10-pack)</div><div class="chk-note">Wooden or plastic hangers for the wardrobe</div></div><div class="chk-price">$12</div></div>
 
-    <div class="sec">Toiletries</div>
+    <div class="sec">Personal Toiletries</div>
 
-    <div class="chk done" onclick="toggle(this)" data-cat="toiletries" data-price="10"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Toilet Paper (12-roll pack)</div><div class="chk-note">Scott or Paseo · 3-ply recommended</div></div><div class="chk-price">$10</div></div>
-    <div class="chk done" onclick="toggle(this)" data-cat="toiletries" data-price="10"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Hair Shampoo</div><div class="chk-note">Head &amp; Shoulders or Dove · 400ml bottle</div></div><div class="chk-price">$10</div></div>
-    <div class="chk done" onclick="toggle(this)" data-cat="toiletries" data-price="9"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Body Wash / Shower Gel</div><div class="chk-note">Dove or Lifebuoy · 500ml pump bottle</div></div><div class="chk-price">$9</div></div>
-    <div class="chk done" onclick="toggle(this)" data-cat="toiletries" data-price="8"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Toothbrush &amp; Toothpaste</div><div class="chk-note">Colgate or Oral-B · bundle set</div></div><div class="chk-price">$8</div></div>
-    <div class="chk" onclick="toggle(this)" data-cat="toiletries" data-price="6"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Deodorant</div><div class="chk-note">Rexona or Dove · roll-on or spray</div></div><div class="chk-price">$6</div></div>
-    <div class="chk done" onclick="toggle(this)" data-cat="toiletries" data-price="12"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Face Wash / Cleanser</div><div class="chk-note">Cetaphil or Neutrogena · 150ml tube</div></div><div class="chk-price">$12</div></div>
-    <div class="chk" onclick="toggle(this)" data-cat="toiletries" data-price="15"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Razor or Trimmer</div><div class="chk-note">Gillette disposable pack or a basic electric trimmer</div></div><div class="chk-price">$15</div></div>
+    <div class="chk done" onclick="toggle(this)" data-cat="toiletries" data-price="14"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Shampoo &amp; Conditioner</div><div class="chk-note">Pantene or Head &amp; Shoulders · large pump bottle</div></div><div class="chk-price">$14</div></div>
+    <div class="chk done" onclick="toggle(this)" data-cat="toiletries" data-price="10"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Body Wash</div><div class="chk-note">Lifebuoy or Dettol · antibacterial</div></div><div class="chk-price">$10</div></div>
+    <div class="chk done" onclick="toggle(this)" data-cat="toiletries" data-price="8"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Toothpaste &amp; Toothbrush</div><div class="chk-note">Colgate set · essentials</div></div><div class="chk-price">$8</div></div>
+    <div class="chk" onclick="toggle(this)" data-cat="toiletries" data-price="6"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Toilet Paper (10-roll)</div><div class="chk-note">Vinda or Kleenex · 3-ply pack</div></div><div class="chk-price">$6</div></div>
+    <div class="chk" onclick="toggle(this)" data-cat="toiletries" data-price="12"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Deodorant &amp; Grooming</div><div class="chk-note">Daily personal hygiene essentials</div></div><div class="chk-price">$12</div></div>
+    <div class="chk" onclick="toggle(this)" data-cat="toiletries" data-price="15"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Sunscreen &amp; Skincare</div><div class="chk-note">For Singapore's hot &amp; humid climate</div></div><div class="chk-price">$15</div></div>
 
   </div>
-
-  <div class="fade"></div>
 </div>
 
+<div class="fade"></div>
+
 <script>
-function sw(name) {
-  const names = ['overview','breakdown','checklist'];
-  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', names[i]===name));
-  names.forEach(n => document.getElementById('p-'+n).classList.toggle('active', n===name));
-}
+  // Setup Constants & Variables
+  const RATE = 3.189;
+  // Capital In: Dad RM 27,000 + Joe RM 1,500 = RM 28,500
+  const TOTAL_IN = Math.round(28500 / RATE);
 
-// Global state computation variables
-let elapsedDays = 0;
-let remainingDays = 0;
-let publicTransportDays = 0;
-let foodSpent = 0;
-let transportSpent = 0;
+  // June rent (1200) + June utils (120) prepaid + May rent (1200) + May utils (100) + Agent fee (600) = 3220
+  const FIXED_HOUSING = 1200 + 100 + 1200 + 120 + 600;
+  const FIXED_DEPOSITS = 2200;
+  const FIXED_SETUP = 340;
 
-function calculateTime() {
-  const now = new Date();
-  const utcMs = now.getTime() + (now.getTimezoneOffset() * 60000);
-  const sgMs = utcMs + (3600000 * 8);
-  const sgYear = new Date(sgMs).getUTCFullYear();
-  document.getElementById('hdr-month').textContent = `Expense Tracker · May ${sgYear}`;
-  const startMs = Date.UTC(sgYear, 4, 2, 13, 0, 0); 
-  
-  elapsedDays = Math.floor((sgMs - startMs) / 86400000) + 1;
-  if (elapsedDays < 0) elapsedDays = 0;
-  if (elapsedDays > 30) elapsedDays = 30;
-  
-  remainingDays = 30 - elapsedDays;
-  foodSpent = elapsedDays * 40;
+  // Travel Expenses: Flight Ticket (RM 500) + Bus return (RM 130) + Bus back (RM 90) = RM 720
+  const FIXED_TRAVEL_RM = 500 + 130 + 90;
+  const FIXED_TRAVEL = Math.round(FIXED_TRAVEL_RM / RATE);
 
-  // Grab exception logic for 10th May
-  // If the app is on or past May 10th (which is day 9, since May 2 is day 1), deduct 1 public transport day
-  publicTransportDays = elapsedDays >= 9 ? elapsedDays - 1 : elapsedDays;
-  transportSpent = publicTransportDays * 4;
+  const BASE_FIXED_SPENT = FIXED_HOUSING + FIXED_DEPOSITS + FIXED_SETUP + FIXED_TRAVEL;
 
-  const foodRemaining = remainingDays * 40;
-  const transportRemaining = remainingDays * 4;
+  // The $400 set-aside (income tax $200 + emergency buffer $200) is pre-checked and deducted
+  // from cash — treated as if it does not exist in available balance
+  const RESERVED_STACK = 400;
 
-  const elFood = document.getElementById('chk-food');
-  elFood.dataset.price = foodRemaining;
-  document.getElementById('chk-food-price').textContent = `$${foodRemaining}`;
-  document.getElementById('chk-food-note').textContent = `${remainingDays} remaining days × $40 per day at hawker centres`;
+  // Joe's personal RM 1,500 contribution is excluded from the displayed cash remaining.
+  // It remains part of the budget pool for calculation purposes but is hidden from the balance view.
+  // Do not remove this deduction unless explicitly asked.
+  const JOE_CONTRIBUTION_SGD = Math.round(1500 / RATE);
 
-  const elTransport = document.getElementById('chk-transport');
-  elTransport.dataset.price = transportRemaining;
-  document.getElementById('chk-transport-price').textContent = `$${transportRemaining}`;
-  document.getElementById('chk-transport-note').textContent = `Estimated remaining trips via MRT & Bus on SimplyGo (${remainingDays} days)`;
-}
+  // Ledger Dates context (26 May 2026)
+  const TOTAL_DAYS = 31;
+  const DAYS_PASSED = 26;
+  const DAYS_LEFT = TOTAL_DAYS - DAYS_PASSED;
 
-function recalc() {
-  const items = document.querySelectorAll('.chk');
-  let n = 0, settled = 0, rem = 0;
-  let catRem = { expenses: 0, supplies: 0, toiletries: 0 };
-  let catSet = { expenses: 0, supplies: 0, toiletries: 0 };
+  // Updated Daily parameters
+  const DAILY_FOOD = 40;
+  const DAILY_TRANSPORT = 8;
 
-  // Data structure for dynamically building the Breakdown HTML
-  let bdDynamicData = {
-    expenses: { label: 'Settled Expenses', items: [], color: '#ee7070', subtotal: 0 },
-    supplies: { label: 'Settled Supplies', items: [], color: '#8878e0', subtotal: 0 },
-    toiletries: { label: 'Settled Toiletries', items: [], color: '#3dd4ec', subtotal: 0 }
-  };
+  // Budgets consumed up to 26th May
+  const FOOD_SPENT_SO_FAR = DAYS_PASSED * DAILY_FOOD;
+  const TRANSPORT_SPENT_SO_FAR = DAYS_PASSED * DAILY_TRANSPORT;
 
-  items.forEach(it => {
-    const price = parseFloat(it.dataset.price) || 0;
-    const cat = it.dataset.cat;
-    const name = it.querySelector('.chk-name').textContent;
-    const note = it.querySelector('.chk-note').textContent;
+  // Formatting Helper
+  const fmt = (num) => '$' + Math.round(num).toLocaleString('en-US');
 
-    if (it.classList.contains('done')) {
-      n++;
-      settled += price;
-      if(cat) {
-        catSet[cat] += price;
-        bdDynamicData[cat].items.push({ name, note, price });
-        bdDynamicData[cat].subtotal += price;
+  // DOM Loaded Event handler
+  document.addEventListener('DOMContentLoaded', () => {
+    const foodRemAmt = DAYS_LEFT * DAILY_FOOD;
+    const transRemAmt = DAYS_LEFT * DAILY_TRANSPORT;
+
+    // Bind food budgets remaining
+    const chkFood = document.getElementById('chk-food');
+    chkFood.setAttribute('data-price', foodRemAmt);
+    document.getElementById('chk-food-price').innerText = fmt(foodRemAmt);
+    document.getElementById('chk-food-note').innerText = `${DAYS_LEFT} days remaining @ ${fmt(DAILY_FOOD)}/day`;
+
+    // Bind transport budgets remaining
+    const chkTrans = document.getElementById('chk-transport');
+    chkTrans.setAttribute('data-price', transRemAmt);
+    document.getElementById('chk-transport-price').innerText = fmt(transRemAmt);
+    document.getElementById('chk-transport-note').innerText = `${DAYS_LEFT} days remaining @ ${fmt(DAILY_TRANSPORT)}/day`;
+
+    // Update Banner elements
+    document.getElementById('chk-rem-sub').innerText = "across items not yet settled";
+
+    // Dynamic state computation
+    calc();
+  });
+
+  // Tab Switch logic
+  function sw(target) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById(`p-${target}`).classList.add('active');
+  }
+
+  // Toggling Checklist elements
+  function toggle(el) {
+    el.classList.toggle('done');
+    calc();
+  }
+
+  // Main Mathematical Engine
+  function calc() {
+    let pendingTotal = 0;
+    let settledTotal = 0;
+    let doneItems = 0;
+
+    const catPending = { expenses: 0, supplies: 0, toiletries: 0 };
+    const breakdownInjections = [];
+    let otherEssentialsSpent = 0;
+
+    let dynamicFood = FOOD_SPENT_SO_FAR;
+    let dynamicTransport = TRANSPORT_SPENT_SO_FAR;
+
+    // Loop checklist items to evaluate settled/pending balances
+    document.querySelectorAll('.chk').forEach(chk => {
+      const price = parseFloat(chk.getAttribute('data-price'));
+      const cat = chk.getAttribute('data-cat');
+      const isDone = chk.classList.contains('done');
+      const name = chk.querySelector('.chk-name').innerText;
+      const desc = chk.querySelector('.chk-note').innerText;
+
+      if (isDone) {
+        settledTotal += price;
+        doneItems++;
+
+        if (chk.id === 'chk-food') {
+          dynamicFood += price;
+        } else if (chk.id === 'chk-transport') {
+          dynamicTransport += price;
+        } else {
+          otherEssentialsSpent += price;
+          breakdownInjections.push({ name, desc, price });
+        }
+      } else {
+        pendingTotal += price;
+        catPending[cat] += price;
       }
-    } else {
-      rem += price;
-      if(cat) catRem[cat] += price;
-    }
-  });
+    });
 
-  const totalChecklist = rem + settled;
-  const pct = totalChecklist > 0 ? Math.round((settled / totalChecklist) * 100) : 0;
-  const left = items.length - n;
-  const leftTxt = `across ${left} item${left !== 1 ? 's' : ''} not yet settled`;
+    // Check progress percentage calculation
+    const reqTotalValue = pendingTotal + settledTotal;
+    const pct = reqTotalValue === 0 ? 0 : Math.round((settledTotal / reqTotalValue) * 100);
 
-  ['chk', 'ov'].forEach(prefix => {
-    document.getElementById(`${prefix}-rem`).textContent = `$${rem.toLocaleString()}`;
-    document.getElementById(`${prefix}-rem-sub`).textContent = leftTxt;
-    document.getElementById(`${prefix}-settled`).textContent = `$${settled.toLocaleString()}`;
-    document.getElementById(`${prefix}-pct`).textContent = pct + '%';
-    document.getElementById(`${prefix}-bar`).style.width = pct + '%';
-    document.getElementById(`${prefix}-cat-exp`).textContent = `$${catRem.expenses.toLocaleString()}`;
-    document.getElementById(`${prefix}-cat-sup`).textContent = `$${catRem.supplies.toLocaleString()}`;
-    document.getElementById(`${prefix}-cat-toi`).textContent = `$${catRem.toiletries.toLocaleString()}`;
-  });
-  document.getElementById('chk-count').textContent = `${n} / ${items.length} done`;
+    // Sync Overview Indicators
+    document.getElementById('ov-rem').innerText = fmt(pendingTotal);
+    document.getElementById('ov-settled').innerText = fmt(settledTotal);
+    document.getElementById('ov-pct').innerText = `${pct}%`;
+    document.getElementById('ov-bar').style.width = `${pct}%`;
+    document.getElementById('ov-cat-exp').innerText = fmt(catPending.expenses);
+    document.getElementById('ov-cat-sup').innerText = fmt(catPending.supplies);
+    document.getElementById('ov-cat-toi').innerText = fmt(catPending.toiletries);
 
-  // --- DYNAMICALLY GENERATE BREAKDOWN BLOCKS ---
-  let dynamicHtml = '';
-  for (const catKey in bdDynamicData) {
-    const data = bdDynamicData[catKey];
-    if (data.items.length > 0) {
-      dynamicHtml += `<div class="sec">${data.label}</div>`;
-      data.items.forEach(item => {
-        dynamicHtml += `
+    // Sync Checklist Indicators
+    document.getElementById('chk-rem').innerText = fmt(pendingTotal);
+    document.getElementById('chk-settled').innerText = fmt(settledTotal);
+    document.getElementById('chk-count').innerText = `${doneItems} done`;
+    document.getElementById('chk-pct').innerText = `${pct}%`;
+    document.getElementById('chk-bar').style.width = `${pct}%`;
+    document.getElementById('chk-cat-exp').innerText = fmt(catPending.expenses);
+    document.getElementById('chk-cat-sup').innerText = fmt(catPending.supplies);
+    document.getElementById('chk-cat-toi').innerText = fmt(catPending.toiletries);
+
+    // Food State display updates
+    const isFoodDone = document.getElementById('chk-food').classList.contains('done');
+    const foodPct = isFoodDone ? 100 : Math.round((DAYS_PASSED / TOTAL_DAYS) * 100);
+    document.getElementById('bd-food-desc').innerText = isFoodDone ? `Fully settled for May (${TOTAL_DAYS} days) · ${fmt(DAILY_FOOD)}/day budget` : `${DAYS_PASSED} days passed out of ${TOTAL_DAYS} · ${fmt(DAILY_FOOD)}/day budget`;
+    document.getElementById('bd-food-amt').innerText = fmt(dynamicFood);
+    document.getElementById('bd-food-lbl').innerHTML = `<span>Budget tracking</span><span>${foodPct}%</span>`;
+    document.getElementById('bd-food-fill').style.width = `${foodPct}%`;
+
+    // Transport State display updates
+    const isTransDone = document.getElementById('chk-transport').classList.contains('done');
+    const transPct = isTransDone ? 100 : Math.round((DAYS_PASSED / TOTAL_DAYS) * 100);
+    document.getElementById('bd-transport-desc').innerText = isTransDone ? `Fully settled for May (${TOTAL_DAYS} days) · ${fmt(DAILY_TRANSPORT)}/day budget` : `${DAYS_PASSED} days passed out of ${TOTAL_DAYS} · ${fmt(DAILY_TRANSPORT)}/day budget`;
+    document.getElementById('bd-transport-amt').innerText = fmt(dynamicTransport);
+    document.getElementById('bd-transport-lbl').innerHTML = `<span>Budget tracking</span><span>${transPct}%</span>`;
+    document.getElementById('bd-transport-fill').style.width = `${transPct}%`;
+
+    // Housing subtotal representation
+    document.getElementById('bd-housing-sub').innerText = fmt(FIXED_HOUSING);
+    document.getElementById('bd-daily-sub').innerText = fmt(dynamicFood + dynamicTransport);
+
+    // Append customized checklist items directly to Breakdown tab dynamically
+    const dynList = document.getElementById('bd-dynamic-list');
+    let htmlInj = '';
+    if (breakdownInjections.length > 0) {
+      htmlInj += `<div class="sec">Other Essentials</div>`;
+      breakdownInjections.forEach(item => {
+        htmlInj += `
         <div class="row-card">
-          <div class="row-accent" style="background:${data.color}"></div>
-          <div class="row-body">
-            <div class="row-name">${item.name}</div>
-            <div class="row-desc">${item.note}</div>
-          </div>
-          <div class="row-right">
-            <div class="row-amt">$${item.price}</div>
-            <div class="badge b-paid">Paid</div>
-          </div>
+          <div class="row-accent" style="background:#ee7070"></div>
+          <div class="row-body"><div class="row-name">${item.name}</div><div class="row-desc">${item.desc}</div></div>
+          <div class="row-right"><div class="row-amt">${fmt(item.price)}</div><div class="badge b-paid">Paid</div></div>
         </div>`;
       });
-      dynamicHtml += `<div class="subtotal"><div class="sub-lbl">${data.label} Total</div><div class="sub-val c-mid">$${data.subtotal}</div></div>`;
+      htmlInj += `<div class="subtotal"><div class="sub-lbl">Other Essentials Total</div><div class="sub-val c-red">${fmt(otherEssentialsSpent)}</div></div>`;
     }
+    dynList.innerHTML = htmlInj;
+
+    // Calculate Grand totals & Net balances
+    // The RESERVED_STACK ($400) is pre-baked into otherEssentialsSpent via the done checkboxes,
+    // so it is already counted as spent — cash remaining is naturally reduced by $400.
+    const dynamicDailyTotal = dynamicFood + dynamicTransport;
+    const GRAND_TOTAL = BASE_FIXED_SPENT + dynamicDailyTotal + otherEssentialsSpent;
+    const CASH_REMAINING = TOTAL_IN - GRAND_TOTAL;
+
+    const DISPLAYED_CASH = CASH_REMAINING - JOE_CONTRIBUTION_SGD;
+
+    document.getElementById('bd-grand-amt').innerText = fmt(GRAND_TOTAL);
+    document.getElementById('bb-cash').innerText = fmt(DISPLAYED_CASH);
+    document.getElementById('bb-rm').innerText = `≈ RM ${(DISPLAYED_CASH * RATE).toLocaleString('en-US', {maximumFractionDigits:0})}`;
+
+    document.getElementById('bb-spent').innerText = `${fmt(GRAND_TOTAL)} spent`;
+    document.getElementById('sum-spent').innerText = fmt(GRAND_TOTAL);
+    document.getElementById('sum-cash').innerText = fmt(DISPLAYED_CASH);
+
+    const globalPct = Math.max(0, Math.min(100, Math.round((GRAND_TOTAL / TOTAL_IN) * 100)));
+    document.getElementById('bb-pct').innerText = `${globalPct}% of pool`;
+    document.getElementById('bb-fill').style.width = `${globalPct}%`;
+
+    // Render graphical breakdown bars
+    const barWrap = document.getElementById('bars');
+    const bData = [
+      { n: 'Housing (May & June)', v: FIXED_HOUSING, c: '#3dd4ec' },
+      { n: 'Deposits Placed', v: FIXED_DEPOSITS, c: '#eda820' },
+      { n: 'Daily Living', v: dynamicDailyTotal, c: '#10c484' },
+      { n: 'Room Setup', v: FIXED_SETUP, c: '#8878e0' },
+      { n: 'Other Essentials', v: otherEssentialsSpent, c: '#ee7070' },
+      { n: 'Travel', v: FIXED_TRAVEL, c: '#6e90ae' }
+    ];
+
+    let barHtml = '';
+    bData.sort((a,b) => b.v - a.v).forEach(b => {
+      if(b.v > 0) {
+        const fillP = Math.max(2, Math.round((b.v / GRAND_TOTAL) * 100));
+        barHtml += `
+        <div style="margin-bottom:14px">
+          <div style="display:flex; justify-content:space-between; font-size:11px; color:#c4d8ec; margin-bottom:5px">
+            <span style="font-weight:600; letter-spacing:0.02em">${b.n}</span>
+            <span style="font-family:var(--serif); font-size:16px">${fmt(b.v)}</span>
+          </div>
+          <div style="height:5px; background:#172135; border-radius:3px; overflow:hidden">
+            <div style="height:100%; width:${fillP}%; background:${b.c}; border-radius:3px; transition:width 0.5s ease"></div>
+          </div>
+        </div>`;
+      }
+    });
+    barWrap.innerHTML = barHtml;
   }
-  document.getElementById('bd-dynamic-list').innerHTML = dynamicHtml;
-
-  const baseSpent = 4601; 
-  const totalSpent = baseSpent + foodSpent + transportSpent + settled;
-  const moneyIn = 5968; // 18,500 RM / 3.10
-  const cashRemaining = moneyIn - totalSpent;
-
-  document.getElementById('bb-cash').textContent = `$${cashRemaining.toLocaleString()}`;
-  document.getElementById('bb-rm').textContent = `≈ RM ${(cashRemaining * 3.1).toLocaleString(undefined, {maximumFractionDigits:0})}`;
-  document.getElementById('bb-spent').textContent = `$${totalSpent.toLocaleString()} spent`;
-  const spendPct = Math.round((totalSpent / moneyIn) * 100);
-  document.getElementById('bb-pct').textContent = `${spendPct}% of pool`;
-  document.getElementById('bb-fill').style.width = `${spendPct}%`;
-
-  document.getElementById('sum-spent').textContent = `$${totalSpent.toLocaleString()}`;
-  document.getElementById('sum-cash').textContent = `$${cashRemaining.toLocaleString()}`;
-  document.getElementById('bd-grand-amt').textContent = `$${totalSpent.toLocaleString()}`;
-
-  document.getElementById('bd-food-amt').textContent = `$${foodSpent}`;
-  document.getElementById('bd-food-lbl').innerHTML = `<span>$${foodSpent} used of $1,200 May budget</span><span>${Math.round(foodSpent/1200*100)}%</span>`;
-  document.getElementById('bd-food-fill').style.width = `${Math.round(foodSpent/1200*100)}%`;
-  document.getElementById('bd-food-desc').textContent = `$40 per day at hawker centres — ${elapsedDays} days so far`;
-
-  document.getElementById('bd-transport-amt').textContent = `$${transportSpent}`;
-  document.getElementById('bd-transport-lbl').innerHTML = `<span>$${transportSpent} used of $120 May budget</span><span>${Math.round(transportSpent/120*100)}%</span>`;
-  document.getElementById('bd-transport-fill').style.width = `${Math.round(transportSpent/120*100)}%`;
-  
-  // Note: Appends an explanation to the breakdown that Grab was used on May 10th
-  document.getElementById('bd-transport-desc').textContent = `MRT & Bus via SimplyGo — approx $4/day — ${publicTransportDays} days so far (Grab used on 10 May)`;
-
-  document.getElementById('bd-daily-sub').textContent = `$${foodSpent + transportSpent}`;
-
-  const barsData = [
-    { label:'Rent',         amt:1200, color:'#3dd4ec' },
-    { label:'Agent Fee',    amt: 600, color:'#3dd4ec' },
-    { label:'Sec. Deposit', amt:1200, color:'#eda820' },
-    { label:'Bank Deposit', amt:1000, color:'#eda820' },
-    { label:'Room Setup',   amt: 340, color:'#8878e0' },
-    { label:'Food',         amt: foodSpent, color:'#10c484' },
-    { label:'Utilities',    amt: 100, color:'#3dd4ec' },
-    { label:'Flight',       amt: 161, color:'#8878e0' },
-    { label:'Transport',    amt: transportSpent, color:'#10c484' }
-  ];
-  
-  if (catSet.toiletries > 0) barsData.push({ label:'Toiletries', amt: catSet.toiletries, color:'#3dd4ec' });
-  if (catSet.supplies > 0) barsData.push({ label:'Supplies', amt: catSet.supplies, color:'#8878e0' });
-  if (catSet.expenses > 0) barsData.push({ label:'Other Exp', amt: catSet.expenses, color:'#10c484' });
-
-  barsData.sort((a,b) => b.amt - a.amt);
-
-  const bc = document.getElementById('bars');
-  bc.innerHTML = '';
-  barsData.forEach(function(b) {
-    const pctBar = Math.max(4, Math.round(b.amt / 1200 * 100));
-    bc.innerHTML += `<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
-      <div style="width:88px;font-size:11px;color:#6e90ae;font-weight:500;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${b.label}</div>
-      <div style="flex:1;height:4px;background:#172135;border-radius:3px;overflow:hidden;">
-        <div style="width:${pctBar}%;height:100%;background:${b.color};border-radius:3px;box-shadow:0 0 5px ${b.color}55"></div>
-      </div>
-      <div style="width:44px;text-align:right;font-family:Georgia,serif;font-size:13px;color:#6e90ae;flex-shrink:0">$${b.amt}</div>
-    </div>`;
-  });
-}
-
-function toggle(el) { 
-  el.classList.toggle('done'); 
-  recalc(); 
-}
-
-calculateTime();
-recalc();
-
 </script>
 </body>
 </html>
