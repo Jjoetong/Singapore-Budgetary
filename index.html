@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>SG Relocation — Expense Tracker</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+:root {
+  --bg:         #060910;
+  --s1:         #0a0f1c;
+  --s2:         #0e1526;
+  --s3:         #12192e;
+  --s4:         #172135;
+  --bdr:        #1c2d42;
+  --bdr2:       #243650;
+  --cyan:       #18b8d4;
+  --cyan-b:     #3dd4ec;
+  --cyan-mute:  rgba(61,212,236,0.14);
+  --cyan-line:  rgba(61,212,236,0.18);
+  --green:      #0c9a6a;
+  --green-b:    #10c484;
+  --green-mute: rgba(16,196,132,0.12);
+  --amber:      #c07808;
+  --amber-b:    #eda820;
+  --amber-mute: rgba(237,168,32,0.12);
+  --red:        #c84040;
+  --red-b:      #ee7070;
+  --red-mute:   rgba(238,112,112,0.10);
+  --purple:     #6050c0;
+  --purple-b:   #8878e0;
+  --text:       #c4d8ec;
+  --text2:      #6e90ae;
+  --text3:      #3a5266;
+  --serif:      'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+  --sans:       'DM Sans', -apple-system, 'Helvetica Neue', Arial, sans-serif;
+}
+
+html, body { height:100%; height:100dvh; }
+body {
+  background: #060910;
+  color: #c4d8ec;
+  font-family: 'DM Sans', -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  max-width: 430px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.hdr {
+  background: #0a0f1c;
+  border-bottom: 1px solid #1c2d42;
+  padding: 13px 20px 11px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  position: relative;
+}
+.hdr::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(61,212,236,0.25), transparent);
+}
+.hdr-brand {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: #c4d8ec;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+.hdr-sub {
+  font-size: 9.5px;
+  color: #3a5266;
+  margin-top: 3px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+}
+.rate-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(61,212,236,0.08);
+  border: 1px solid rgba(61,212,236,0.20);
+  border-radius: 6px;
+  padding: 5px 11px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #3dd4ec;
+  letter-spacing: 0.03em;
+}
+.live-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: #10c484;
+  box-shadow: 0 0 5px #10c484;
+  animation: blink 3s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.15} }
+
+.balance-bar {
+  background: #0a0f1c;
+  border-bottom: 1px solid #1c2d42;
+  padding: 14px 20px 10px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+.balance-bar::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(61,212,236,0.18), transparent);
+}
+.bb-lbl {
+  font-size: 9.5px;
+  font-weight: 600;
+  color: #3a5266;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 5px;
+}
+.bb-fig {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #3dd4ec;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+.bb-rm { font-size: 10.5px; color: #3a5266; margin-top: 4px; }
+.bb-right { text-align: right; }
+.bb-spent {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 19px;
+  color: #6e90ae;
+  line-height: 1;
+}
+.bb-spent-lbl { font-size: 9.5px; color: #3a5266; text-transform: uppercase; letter-spacing: 0.10em; margin-top: 3px; }
+.bb-pct {
+  display: inline-block;
+  margin-top: 7px;
+  background: rgba(237,168,32,0.12);
+  border: 1px solid rgba(237,168,32,0.22);
+  border-radius: 5px;
+  padding: 2px 8px;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #eda820;
+  letter-spacing: 0.04em;
+}
+
+.balance-prog {
+  background: #0a0f1c;
+  border-bottom: 1px solid #1c2d42;
+  padding: 0 20px 10px;
+  flex-shrink: 0;
+}
+.bp-track { height: 3px; background: #172135; border-radius: 3px; overflow: hidden; }
+.bp-fill  { height: 100%; width: 0%; background: linear-gradient(90deg, #0c4f70, #3dd4ec); border-radius: 3px; box-shadow: 0 0 7px rgba(61,212,236,0.20); transition: width 0.4s ease; }
+
+.tabs {
+  display: flex;
+  background: #0a0f1c;
+  border-bottom: 1px solid #1c2d42;
+  flex-shrink: 0;
+}
+.tab {
+  flex: 1;
+  padding: 11px 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #3a5266;
+  text-align: center;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color .18s, border-color .18s;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  user-select: none;
+}
+.tab.active { color: #3dd4ec; border-bottom-color: #18b8d4; }
+
+.content { flex: 1; overflow: hidden; position: relative; }
+.panel { display: none; height: 100%; overflow-y: auto; padding: 14px 15px 88px; scrollbar-width: none; }
+.panel::-webkit-scrollbar { display: none; }
+.panel.active { display: block; }
+
+.sec {
+  font-size: 9.5px;
+  font-weight: 600;
+  color: #3a5266;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin: 16px 0 9px 1px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.sec:first-child { margin-top: 2px; }
+.sec::after { content: ''; flex: 1; height: 1px; background: #1c2d42; }
+
+.req-card {
+  background: #0e1526;
+  border: 1px solid #243650;
+  border-radius: 16px;
+  padding: 20px 20px 18px;
+  margin-bottom: 8px;
+  position: relative;
+  overflow: hidden;
+}
+.req-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent 5%, #3dd4ec 40%, #18b8d4 60%, transparent 95%);
+  opacity: 0.55;
+}
+.req-eyebrow {
+  font-size: 10px;
+  font-weight: 600;
+  color: #3a5266;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin-bottom: 8px;
+}
+.req-row { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 16px; }
+.req-fig {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 50px;
+  font-weight: 700;
+  color: #3dd4ec;
+  line-height: 1;
+}
+.req-sub { font-size: 11px; color: #3a5266; margin-top: 5px; }
+.req-settled { text-align: right; }
+.req-settled-lbl { font-size: 9.5px; color: #3a5266; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 5px; }
+.req-settled-fig {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 22px;
+  color: #10c484;
+}
+
+.req-prog-meta { display: flex; justify-content: space-between; font-size: 10px; color: #3a5266; margin-bottom: 6px; }
+.req-prog-track { height: 4px; background: #172135; border-radius: 3px; overflow: hidden; }
+.req-prog-fill  {
+  height: 100%;
+  background: linear-gradient(90deg, #0c5070, #3dd4ec);
+  border-radius: 3px;
+  box-shadow: 0 0 8px rgba(61,212,236,0.20);
+  transition: width 0.35s ease;
+}
+
+.req-cats { display: flex; gap: 7px; }
+.req-cat {
+  flex: 1;
+  background: #12192e;
+  border: 1px solid #1c2d42;
+  border-radius: 10px;
+  padding: 10px 10px 9px;
+  text-align: center;
+}
+.req-cat-lbl { font-size: 8.5px; font-weight: 600; color: #3a5266; text-transform: uppercase; letter-spacing: 0.10em; margin-bottom: 5px; }
+.req-cat-val {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.sum-card {
+  background: #0e1526;
+  border: 1px solid #1c2d42;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 7px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  overflow: hidden;
+}
+.sum-accent { position: absolute; left: 0; top: 0; bottom: 0; width: 3px; border-radius: 12px 0 0 12px; }
+.sum-name { font-size: 15px; font-weight: 600; color: #c4d8ec; margin-bottom: 3px; }
+.sum-desc { font-size: 11.5px; color: #3a5266; line-height: 1.4; }
+.sum-amt  {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 21px;
+  flex-shrink: 0;
+}
+
+.bar-wrap { background: #0e1526; border: 1px solid #1c2d42; border-radius: 12px; padding: 17px 16px; }
+
+.row-card {
+  background: #0e1526;
+  border: 1px solid #1c2d42;
+  border-radius: 12px;
+  padding: 13px 15px 12px;
+  margin-bottom: 7px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  overflow: hidden;
+}
+.row-card.has-prog { flex-direction: column; align-items: stretch; }
+.row-accent { position: absolute; left: 0; top: 0; bottom: 0; width: 3px; border-radius: 12px 0 0 12px; }
+.row-body { flex: 1; min-width: 0; padding-left: 7px; }
+.row-name { font-size: 14px; font-weight: 600; color: #c4d8ec; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.row-desc { font-size: 11px; color: #3a5266; line-height: 1.45; }
+.row-right { text-align: right; flex-shrink: 0; }
+.row-amt  {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 18px;
+  color: #c4d8ec;
+  line-height: 1;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 4px;
+  margin-top: 5px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.b-paid    { background: rgba(16,196,132,0.12); color: #10c484; border: 1px solid rgba(16,196,132,0.20); }
+.b-deposit { background: rgba(237,168,32,0.12);  color: #eda820; border: 1px solid rgba(237,168,32,0.20); }
+.b-rm      { background: rgba(136,120,224,0.12); color: #8878e0; border: 1px solid rgba(136,120,224,0.20); }
+.b-weekly  { background: rgba(61,212,236,0.10); color: #3dd4ec; border: 1px solid rgba(61,212,236,0.20); }
+.b-monthly { background: rgba(237,168,32,0.10); color: #eda820; border: 1px solid rgba(237,168,32,0.20); }
+
+.row-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%; }
+.mini-prog { margin-top: 11px; width: 100%; }
+.mini-lbl  { display: flex; justify-content: space-between; font-size: 10px; color: #3a5266; margin-bottom: 5px; }
+.mini-track { height: 3px; background: #172135; border-radius: 3px; overflow: hidden; }
+.mini-fill  { height: 100%; border-radius: 3px; transition: width 0.4s ease; }
+
+.subtotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  background: #12192e;
+  border: 1px solid #1c2d42;
+  border-radius: 9px;
+  margin-top: 2px;
+  margin-bottom: 4px;
+}
+.sub-lbl { font-size: 12px; color: #3a5266; font-weight: 500; }
+.sub-val {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 17px;
+}
+
+.grand {
+  margin-top: 16px;
+  background: #0e1526;
+  border: 1px solid #243650;
+  border-radius: 14px;
+  padding: 18px 20px 17px;
+  position: relative;
+  overflow: hidden;
+}
+.grand::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(61,212,236,0.20), transparent);
+}
+.grand-lbl { font-size: 9.5px; color: #3a5266; text-transform: uppercase; letter-spacing: 0.14em; font-weight: 600; margin-bottom: 8px; }
+.grand-amt {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 44px;
+  color: #3dd4ec;
+  line-height: 1;
+}
+.grand-sub { font-size: 11.5px; color: #3a5266; margin-top: 6px; line-height: 1.5; }
+
+.chk-banner {
+  background: #0e1526;
+  border: 1px solid #243650;
+  border-radius: 16px;
+  padding: 20px 20px 18px;
+  margin-bottom: 4px;
+  position: relative;
+  overflow: hidden;
+}
+.chk-banner::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent 5%, #3dd4ec 40%, #18b8d4 60%, transparent 95%);
+  opacity: 0.55;
+}
+.chk-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+.chk-lbl { font-size: 10px; font-weight: 600; color: #3a5266; text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 7px; }
+.chk-fig {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 50px;
+  font-weight: 700;
+  color: #3dd4ec;
+  line-height: 1;
+}
+.chk-fig-sub { font-size: 11px; color: #3a5266; margin-top: 5px; }
+.chk-right { text-align: right; }
+.chk-settled-lbl { font-size: 9.5px; color: #3a5266; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 5px; }
+.chk-settled-fig {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 22px;
+  color: #10c484;
+}
+.chk-pill {
+  display: inline-block;
+  margin-top: 8px;
+  background: rgba(16,196,132,0.10);
+  border: 1px solid rgba(16,196,132,0.22);
+  border-radius: 5px;
+  padding: 3px 9px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #10c484;
+  letter-spacing: 0.05em;
+}
+.chk-prog-meta { display: flex; justify-content: space-between; font-size: 10px; color: #3a5266; margin-bottom: 6px; }
+.chk-prog-track { height: 4px; background: #172135; border-radius: 3px; overflow: hidden; }
+.chk-prog-fill  {
+  height: 100%;
+  background: linear-gradient(90deg, #0c5070, #3dd4ec);
+  border-radius: 3px;
+  box-shadow: 0 0 7px rgba(61,212,236,0.20);
+  transition: width 0.35s ease;
+}
+.chk-cats { display: flex; gap: 7px; margin-top: 16px; }
+.chk-cat  { flex: 1; background: #12192e; border: 1px solid #1c2d42; border-radius: 10px; padding: 10px 8px 9px; text-align: center; }
+.chk-cat-lbl { font-size: 8.5px; font-weight: 600; color: #3a5266; text-transform: uppercase; letter-spacing: 0.10em; margin-bottom: 5px; }
+.chk-cat-val {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.chk {
+  background: #0e1526;
+  border: 1px solid #1c2d42;
+  border-radius: 12px;
+  padding: 13px 15px;
+  margin-bottom: 7px;
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  cursor: pointer;
+  transition: opacity .2s;
+  user-select: none;
+}
+.chk:active { opacity: 0.75; }
+.chk.done { opacity: 0.25; border-color: transparent; }
+.chk.done .chk-name { text-decoration: line-through; color: #3a5266; }
+.chkbox {
+  width: 22px; height: 22px;
+  border-radius: 6px;
+  border: 1.5px solid #243650;
+  flex-shrink: 0;
+  margin-top: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #060910;
+  transition: background .18s, border-color .18s;
+}
+.chk.done .chkbox { background: #18b8d4; border-color: #18b8d4; }
+.tick { display: none; font-size: 12px; color: #060910; font-weight: 700; }
+.chk.done .tick { display: block; }
+.chk-body { flex: 1; min-width: 0; }
+.chk-name { font-size: 15px; font-weight: 600; color: #c4d8ec; margin-bottom: 3px; }
+.chk-note { font-size: 12px; color: #3a5266; line-height: 1.45; }
+.chk-price {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 18px;
+  color: #c4d8ec;
+  flex-shrink: 0;
+  padding-top: 1px;
+}
+
+.c-cyan   { color: #3dd4ec; }
+.c-green  { color: #10c484; }
+.c-amber  { color: #eda820; }
+.c-red    { color: #ee7070; }
+.c-purple { color: #8878e0; }
+.c-mid    { color: #6e90ae; }
+
+.fade {
+  position: absolute;
+  bottom: 0; left: 0; right: 0; height: 52px;
+  background: linear-gradient(transparent, #060910);
+  pointer-events: none;
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div>
+    <div class="hdr-brand">SG Relocation</div>
+    <div class="hdr-sub" id="hdr-month">Expense Tracker · May &amp; June</div>
+  </div>
+</div>
+
+<!-- BALANCE BAR -->
+<div class="balance-bar">
+  <div>
+    <div class="bb-lbl">Cash Remaining</div>
+    <div class="bb-fig" id="bb-cash">$0</div>
+    <div class="bb-rm" id="bb-rm">≈ RM 0</div>
+  </div>
+  <div class="bb-right">
+    <div class="bb-spent" id="bb-spent">$0 spent</div>
+    <div class="bb-spent-lbl">Total Spent</div>
+    <div class="bb-pct" id="bb-pct">0% of pool</div>
+  </div>
+</div>
+<div class="balance-prog">
+  <div class="bp-track"><div class="bp-fill" id="bb-fill"></div></div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" onclick="sw('overview')">Overview</div>
+  <div class="tab" onclick="sw('breakdown')">Breakdown</div>
+  <div class="tab" onclick="sw('checklist')">Checklist</div>
+</div>
+
+<div class="content">
+
+  <!-- ═══ OVERVIEW ═══ -->
+  <div class="panel active" id="p-overview">
+
+    <div class="sec" style="margin-top:2px">What Is Still Needed</div>
+
+    <div class="req-card">
+      <div class="req-eyebrow">Total Still Required</div>
+      <div class="req-row">
+        <div>
+          <div class="req-fig" id="ov-rem">$0</div>
+          <div class="req-sub" id="ov-rem-sub">across items not yet settled</div>
+        </div>
+        <div class="req-settled">
+          <div class="req-settled-lbl">Settled</div>
+          <div class="req-settled-fig" id="ov-settled">$0</div>
+        </div>
+      </div>
+      <div class="req-prog-meta"><span>Checklist progress</span><span id="ov-pct">0%</span></div>
+      <div class="req-prog-track"><div class="req-prog-fill" id="ov-bar" style="width:0%"></div></div>
+      <div class="req-cats">
+        <div class="req-cat"><div class="req-cat-lbl">Expenses</div><div class="req-cat-val c-red" id="ov-cat-exp">$0</div></div>
+        <div class="req-cat"><div class="req-cat-lbl">Supplies</div><div class="req-cat-val c-purple" id="ov-cat-sup">$0</div></div>
+        <div class="req-cat"><div class="req-cat-lbl">Toiletries</div><div class="req-cat-val c-cyan" id="ov-cat-toi">$0</div></div>
+      </div>
+    </div>
+
+    <div class="sec">Money Summary</div>
+
+    <div class="sum-card">
+      <div class="sum-accent" style="background:#3dd4ec"></div>
+      <div style="padding-left:7px">
+        <div class="sum-name">Total Money In</div>
+        <div class="sum-desc">Dad RM 27,000 + Joe RM 1,500 + Mom RM 600, converted to SGD at 3.189</div>
+      </div>
+      <div class="sum-amt c-cyan" id="sum-total-in">$9,125</div>
+    </div>
+
+    <div class="sum-card">
+      <div class="sum-accent" style="background:#ee7070"></div>
+      <div style="padding-left:7px">
+        <div class="sum-name">Total Spent So Far</div>
+        <div class="sum-desc">All payments made including rent, deposits, setup and flight</div>
+      </div>
+      <div class="sum-amt c-red" id="sum-spent">$0</div>
+    </div>
+
+    <div class="sum-card">
+      <div class="sum-accent" style="background:#eda820"></div>
+      <div style="padding-left:7px">
+        <div class="sum-name">Deposits Placed</div>
+        <div class="sum-desc">Rental security deposit + bank account lock-in amount</div>
+      </div>
+      <div class="sum-amt c-amber">$2,200</div>
+    </div>
+
+    <div class="sum-card">
+      <div class="sum-accent" style="background:#10c484"></div>
+      <div style="padding-left:7px">
+        <div class="sum-name">Cash Still in Hand</div>
+        <div class="sum-desc">Available to spend right now</div>
+      </div>
+      <div class="sum-amt c-green" id="sum-cash">$0</div>
+    </div>
+
+    <div class="sec">Where the Money Went</div>
+    <div class="bar-wrap" id="bars"></div>
+
+  </div>
+
+  <!-- ═══ BREAKDOWN ═══ -->
+  <div class="panel" id="p-breakdown">
+
+    <div class="sec">Housing</div>
+    <div class="row-card">
+      <div class="row-accent" style="background:#3dd4ec"></div>
+      <div class="row-body"><div class="row-name">First Month Rent (May)</div><div class="row-desc">Room accommodation in Singapore</div></div>
+      <div class="row-right"><div class="row-amt">$1,200</div><div class="badge b-paid">Paid</div></div>
+    </div>
+    <div class="row-card">
+      <div class="row-accent" style="background:#3dd4ec"></div>
+      <div class="row-body"><div class="row-name">Utilities (May)</div><div class="row-desc">Water, electricity & WiFi — first month</div></div>
+      <div class="row-right"><div class="row-amt">$100</div><div class="badge b-paid">Paid</div></div>
+    </div>
+    <div class="row-card">
+      <div class="row-accent" style="background:#3dd4ec"></div>
+      <div class="row-body"><div class="row-name">June Rent</div><div class="row-desc">Prepaid second month room accommodation</div></div>
+      <div class="row-right"><div class="row-amt">$1,200</div><div class="badge b-paid">Paid</div></div>
+    </div>
+    <div class="row-card">
+      <div class="row-accent" style="background:#3dd4ec"></div>
+      <div class="row-body"><div class="row-name">June Utilities</div><div class="row-desc">Prepaid water, electricity & WiFi</div></div>
+      <div class="row-right"><div class="row-amt">$120</div><div class="badge b-paid">Paid</div></div>
+    </div>
+    <div class="row-card">
+      <div class="row-accent" style="background:#3dd4ec"></div>
+      <div class="row-body"><div class="row-name">Property Agent Fee</div><div class="row-desc">One-time agent service fee for securing the room</div></div>
+      <div class="row-right"><div class="row-amt">$600</div><div class="badge b-paid">Paid</div></div>
+    </div>
+    <div class="subtotal"><div class="sub-lbl">Housing Total</div><div class="sub-val c-mid" id="bd-housing-sub">$0</div></div>
+
+    <div class="sec">Deposits</div>
+    <div class="row-card">
+      <div class="row-accent" style="background:#eda820"></div>
+      <div class="row-body"><div class="row-name">Rental Security Deposit</div><div class="row-desc">Held by landlord upon signing of tenancy</div></div>
+      <div class="row-right"><div class="row-amt">$1,200</div><div class="badge b-deposit">Deposit</div></div>
+    </div>
+    <div class="row-card">
+      <div class="row-accent" style="background:#eda820"></div>
+      <div class="row-body"><div class="row-name">Bank Account Deposit</div><div class="row-desc">Seeds SG account for financial operations</div></div>
+      <div class="row-right"><div class="row-amt">$1,000</div><div class="badge b-deposit">Deposit</div></div>
+    </div>
+    <div class="subtotal"><div class="sub-lbl">Deposits Total</div><div class="sub-val c-amber">$2,200</div></div>
+
+    <div class="sec">Room Setup</div>
+    <div class="row-card">
+      <div class="row-accent" style="background:#8878e0"></div>
+      <div class="row-body"><div class="row-name">Mattress</div><div class="row-desc">One-off purchase</div></div>
+      <div class="row-right"><div class="row-amt">$200</div><div class="badge b-paid">Paid</div></div>
+    </div>
+    <div class="row-card">
+      <div class="row-accent" style="background:#8878e0"></div>
+      <div class="row-body"><div class="row-name">Pillow</div><div class="row-desc">One-off purchase</div></div>
+      <div class="row-right"><div class="row-amt">$40</div><div class="badge b-paid">Paid</div></div>
+    </div>
+    <div class="row-card">
+      <div class="row-accent" style="background:#8878e0"></div>
+      <div class="row-body"><div class="row-name">Bed Sheets</div><div class="row-desc">One-off purchase</div></div>
+      <div class="row-right"><div class="row-amt">$100</div><div class="badge b-paid">Paid</div></div>
+    </div>
+    <div class="subtotal"><div class="sub-lbl">Room Setup Total</div><div class="sub-val c-mid">$340</div></div>
+
+    <div class="sec">Daily Living</div>
+
+    <div class="row-card has-prog">
+      <div class="row-top">
+        <div class="row-body" style="padding-left:0">
+          <div class="row-name">Food &amp; Meals</div>
+          <div class="row-desc" id="bd-food-desc">Loading...</div>
+        </div>
+        <div class="row-right"><div class="row-amt" id="bd-food-amt">$0</div><div class="badge b-paid">Paid</div></div>
+      </div>
+      <div class="mini-prog">
+        <div class="mini-lbl" id="bd-food-lbl"><span>...</span><span>0%</span></div>
+        <div class="mini-track"><div class="mini-fill" id="bd-food-fill" style="width:0%;background:linear-gradient(90deg,#065f46,#10c484)"></div></div>
+      </div>
+    </div>
+
+    <div class="row-card has-prog">
+      <div class="row-top">
+        <div class="row-body" style="padding-left:0">
+          <div class="row-name">Public Transport</div>
+          <div class="row-desc" id="bd-transport-desc">Loading...</div>
+        </div>
+        <div class="row-right"><div class="row-amt" id="bd-transport-amt">$0</div><div class="badge b-paid">Paid</div></div>
+      </div>
+      <div class="mini-prog">
+        <div class="mini-lbl" id="bd-transport-lbl"><span>...</span><span>0%</span></div>
+        <div class="mini-track"><div class="mini-fill" id="bd-transport-fill" style="width:0%;background:linear-gradient(90deg,#0c5070,#3dd4ec)"></div></div>
+      </div>
+    </div>
+
+    <div class="subtotal"><div class="sub-lbl">Daily Living (so far)</div><div class="sub-val c-mid" id="bd-daily-sub">$0</div></div>
+
+    <div class="sec">Recurring</div>
+    <div class="row-card">
+      <div class="row-accent" style="background:#3dd4ec"></div>
+      <div class="row-body">
+        <div class="row-name">Laundry Dryer</div>
+        <div class="row-desc" id="bd-laundry-desc">Weekly Expense · $8/week · Every Saturday 9pm</div>
+      </div>
+      <div class="row-right"><div class="row-amt" id="bd-laundry-amt">$0</div><div class="badge b-weekly">Weekly</div></div>
+    </div>
+    <div class="row-card">
+      <div class="row-accent" style="background:#eda820"></div>
+      <div class="row-body">
+        <div class="row-name">Singtel Phone Bill</div>
+        <div class="row-desc" id="bd-singtel-desc">Monthly Expense · $50/month · Deducts on the 29th</div>
+      </div>
+      <div class="row-right"><div class="row-amt" id="bd-singtel-amt">$0</div><div class="badge b-monthly">Monthly</div></div>
+    </div>
+    <div class="subtotal"><div class="sub-lbl">Recurring Total (so far)</div><div class="sub-val c-mid" id="bd-recurring-sub">$0</div></div>
+
+    <div class="sec">Travel</div>
+    <div class="row-card">
+      <div class="row-accent" style="background:#8878e0"></div>
+      <div class="row-body"><div class="row-name">Flight Ticket (KL → Singapore)</div><div class="row-desc">Initial relocation flight — AirAsia / Malindo</div></div>
+      <div class="row-right"><div class="row-amt">RM 500</div><div class="badge b-rm">≈ $161</div></div>
+    </div>
+    <div class="row-card">
+      <div class="row-accent" style="background:#8878e0"></div>
+      <div class="row-body"><div class="row-name">Bus Ride (Singapore → MY, 16 May)</div><div class="row-desc">Cross-border return travel weekend ticket</div></div>
+      <div class="row-right"><div class="row-amt">RM 130</div><div class="badge b-rm">≈ $42</div></div>
+    </div>
+    <div class="row-card">
+      <div class="row-accent" style="background:#8878e0"></div>
+      <div class="row-body"><div class="row-name">Bus Ride (MY → Singapore, 17 May)</div><div class="row-desc">Cross-border returning bus travel</div></div>
+      <div class="row-right"><div class="row-amt">RM 90</div><div class="badge b-rm">≈ $29</div></div>
+    </div>
+    <div class="subtotal"><div class="sub-lbl">Travel Total</div><div class="sub-val c-mid">RM 720</div></div>
+
+    <!-- DYNAMIC CHECKLIST INJECTIONS -->
+    <div id="bd-dynamic-list"></div>
+
+    <div class="grand">
+      <div class="grand-lbl">Grand Total Spent</div>
+      <div class="grand-amt" id="bd-grand-amt">$0</div>
+      <div class="grand-sub">Includes June rent &amp; utilities prepaid, $600 agent fee, and RM 720 travel costs.<br>RM converted at 3.189 rate.</div>
+    </div>
+
+  </div>
+
+  <!-- ═══ CHECKLIST ═══ -->
+  <div class="panel" id="p-checklist">
+
+    <div class="chk-banner">
+      <div class="chk-top">
+        <div>
+          <div class="chk-lbl">Total Still Required</div>
+          <div class="chk-fig" id="chk-rem">$0</div>
+          <div class="chk-fig-sub" id="chk-rem-sub">...</div>
+        </div>
+        <div class="chk-right">
+          <div class="chk-settled-lbl">Settled</div>
+          <div class="chk-settled-fig" id="chk-settled">$0</div>
+          <div class="chk-pill" id="chk-count">0 done</div>
+        </div>
+      </div>
+      <div class="chk-prog-meta"><span>Overall progress</span><span id="chk-pct">0%</span></div>
+      <div class="chk-prog-track"><div class="chk-prog-fill" id="chk-bar" style="width:0%"></div></div>
+      <div class="chk-cats">
+        <div class="chk-cat"><div class="chk-cat-lbl">Expenses</div><div class="chk-cat-val c-red" id="chk-cat-exp">$0</div></div>
+        <div class="chk-cat"><div class="chk-cat-lbl">Supplies</div><div class="chk-cat-val c-purple" id="chk-cat-sup">$0</div></div>
+        <div class="chk-cat"><div class="chk-cat-lbl">Toiletries</div><div class="chk-cat-val c-cyan" id="chk-cat-toi">$0</div></div>
+      </div>
+    </div>
+
+    <div class="sec">Pending Expenses</div>
+
+    <div class="chk" onclick="toggle(this)" data-cat="expenses" data-price="0" id="chk-food"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Food &amp; Meals — Rest of May</div><div class="chk-note" id="chk-food-note">Loading...</div></div><div class="chk-price" id="chk-food-price">$0</div></div>
+    <div class="chk" onclick="toggle(this)" data-cat="expenses" data-price="0" id="chk-transport"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Transport — Rest of May</div><div class="chk-note" id="chk-transport-note">Loading...</div></div><div class="chk-price" id="chk-transport-price">$0</div></div>
+
+    <!-- Income Tax Reserve: $200, pre-checked as done -->
+    <div class="chk done" onclick="toggle(this)" data-cat="expenses" data-price="200"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Income Tax Reserve</div><div class="chk-note">Set aside for annual tax obligations — do not touch</div></div><div class="chk-price">$200</div></div>
+
+    <!-- Emergency Buffer: $200, pre-checked as done -->
+    <div class="chk done" onclick="toggle(this)" data-cat="expenses" data-price="200"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Emergency Buffer</div><div class="chk-note">Safety net for unforeseen costs — locked away, pretend it doesn't exist</div></div><div class="chk-price">$200</div></div>
+
+    <!-- Laundry: dynamic weekly auto-deduct, data-price set by JS -->
+    <div class="chk done" onclick="toggle(this)" data-cat="expenses" data-price="0" id="chk-laundry"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Laundry Dryer (Weekly)</div><div class="chk-note" id="chk-laundry-note">Loading...</div></div><div class="chk-price" id="chk-laundry-price">$0</div></div>
+
+    <div class="chk done" onclick="toggle(this)" data-cat="expenses" data-price="18"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Grab to Work (10 May)</div><div class="chk-note">Alternative to public transport for this day</div></div><div class="chk-price">$18</div></div>
+    <div class="chk done" onclick="toggle(this)" data-cat="expenses" data-price="200"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">AIA Insurance Premium</div><div class="chk-note">Monthly medical and life coverage payment</div></div><div class="chk-price">$200</div></div>
+    <div class="chk done" onclick="toggle(this)" data-cat="expenses" data-price="150"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Work Attire &amp; Appearance</div><div class="chk-note">Appropriate clothing for the job site — first impressions matter</div></div><div class="chk-price">$150</div></div>
+
+    <!-- Singtel: dynamic monthly auto-deduct on 29th, data-price set by JS -->
+    <div class="chk done" onclick="toggle(this)" data-cat="expenses" data-price="0" id="chk-phone"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Singtel Phone Bill</div><div class="chk-note" id="chk-phone-note">Monthly Expense · Deducts on the 29th of each month</div></div><div class="chk-price" id="chk-phone-price">$0</div></div>
+
+    <div class="chk" onclick="toggle(this)" data-cat="expenses" data-price="80"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Personal &amp; Miscellaneous</div><div class="chk-note">Medicine, haircut, and other small daily essentials</div></div><div class="chk-price">$80</div></div>
+
+    <div class="sec">Cleaning &amp; Household Supplies</div>
+
+    <div class="chk done" onclick="toggle(this)" data-cat="supplies" data-price="129"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Hairdryer</div><div class="chk-note">Appliance for personal grooming</div></div><div class="chk-price">$129</div></div>
+    <div class="chk done" onclick="toggle(this)" data-cat="supplies" data-price="109"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Clothes Ironing Steamer</div><div class="chk-note">Garment maintenance for daily work attire</div></div><div class="chk-price">$109</div></div>
+
+    <div class="chk done" onclick="toggle(this)" data-cat="supplies" data-price="12"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Broom &amp; Dustpan Set</div><div class="chk-note">For sweeping the floor daily · Daiso or FairPrice</div></div><div class="chk-price">$12</div></div>
+    <div class="chk done" onclick="toggle(this)" data-cat="supplies" data-price="20"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Mop or Floor Wiper</div><div class="chk-note">Spin mop or flat wiper for wet cleaning</div></div><div class="chk-price">$20</div></div>
+    <div class="chk done" onclick="toggle(this)" data-cat="supplies" data-price="14"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Laundry Detergent</div><div class="chk-note">Dynamo or Breeze · 2kg pack</div></div><div class="chk-price">$14</div></div>
+    <div class="chk done" onclick="toggle(this)" data-cat="supplies" data-price="10"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Fabric Softener</div><div class="chk-note">Comfort or Downy · 1.5 litre</div></div><div class="chk-price">$10</div></div>
+    <div class="chk done" onclick="toggle(this)" data-cat="supplies" data-price="8"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Floor Cleaning Liquid</div><div class="chk-note">Dettol or Magiclean · antibacterial formula</div></div><div class="chk-price">$8</div></div>
+    <div class="chk done" onclick="toggle(this)" data-cat="supplies" data-price="5"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Dishwashing Liquid</div><div class="chk-note">Sunlight or Mama Lemon · 500ml bottle</div></div><div class="chk-price">$5</div></div>
+    <div class="chk done" onclick="toggle(this)" data-cat="supplies" data-price="22"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Padlock</div><div class="chk-note">To secure the room door · Yale or ABUS brand</div></div><div class="chk-price">$22</div></div>
+    <div class="chk done" onclick="toggle(this)" data-cat="supplies" data-price="8"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Tissue Box (4-pack)</div><div class="chk-note">Kleenex or Scott · for everyday use</div></div><div class="chk-price">$8</div></div>
+    <div class="chk" onclick="toggle(this)" data-cat="supplies" data-price="4"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Trash Bags</div><div class="chk-note">Small, medium rolls for room and bathroom bins</div></div><div class="chk-price">$4</div></div>
+    <div class="chk" onclick="toggle(this)" data-cat="supplies" data-price="5"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Dish Sponges &amp; Cloths</div><div class="chk-note">Scotch-Brite pads &amp; microfiber cloths</div></div><div class="chk-price">$5</div></div>
+    <div class="chk" onclick="toggle(this)" data-cat="supplies" data-price="12"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Hangers (10-pack)</div><div class="chk-note">Wooden or plastic hangers for the wardrobe</div></div><div class="chk-price">$12</div></div>
+
+    <div class="sec">Personal Toiletries</div>
+
+    <div class="chk done" onclick="toggle(this)" data-cat="toiletries" data-price="14"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Shampoo &amp; Conditioner</div><div class="chk-note">Pantene or Head &amp; Shoulders · large pump bottle</div></div><div class="chk-price">$14</div></div>
+    <div class="chk done" onclick="toggle(this)" data-cat="toiletries" data-price="10"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Body Wash</div><div class="chk-note">Lifebuoy or Dettol · antibacterial</div></div><div class="chk-price">$10</div></div>
+    <div class="chk done" onclick="toggle(this)" data-cat="toiletries" data-price="8"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Toothpaste &amp; Toothbrush</div><div class="chk-note">Colgate set · essentials</div></div><div class="chk-price">$8</div></div>
+    <div class="chk" onclick="toggle(this)" data-cat="toiletries" data-price="6"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Toilet Paper (10-roll)</div><div class="chk-note">Vinda or Kleenex · 3-ply pack</div></div><div class="chk-price">$6</div></div>
+    <div class="chk" onclick="toggle(this)" data-cat="toiletries" data-price="12"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Deodorant &amp; Grooming</div><div class="chk-note">Daily personal hygiene essentials</div></div><div class="chk-price">$12</div></div>
+    <div class="chk" onclick="toggle(this)" data-cat="toiletries" data-price="15"><div class="chkbox"><span class="tick">✓</span></div><div class="chk-body"><div class="chk-name">Sunscreen &amp; Skincare</div><div class="chk-note">For Singapore's hot &amp; humid climate</div></div><div class="chk-price">$15</div></div>
+
+  </div>
+</div>
+
+<div class="fade"></div>
+
+<script>
+  // Setup Constants & Variables
+  const RATE = 3.189;
+  const TOTAL_IN = Math.round(29100 / RATE);
+
+  const FIXED_HOUSING = 1200 + 100 + 1200 + 120 + 600;
+  const FIXED_DEPOSITS = 2200;
+  const FIXED_SETUP = 340;
+
+  const FIXED_TRAVEL_RM = 500 + 130 + 90;
+  const FIXED_TRAVEL = Math.round(FIXED_TRAVEL_RM / RATE);
+
+  const BASE_FIXED_SPENT = FIXED_HOUSING + FIXED_DEPOSITS + FIXED_SETUP + FIXED_TRAVEL;
+
+  const RESERVED_STACK = 400;
+  const JOE_CONTRIBUTION_SGD = Math.round(1500 / RATE);
+
+  // --- DYNAMIC LIVE DATE & TIME ENGINE ---
+  const TOTAL_DAYS = 31;
+  const DAILY_FOOD = 40;
+  const DAILY_TRANSPORT = 8;
+
+  const now = new Date();
+  const isMay2026 = (now.getMonth() === 4 && now.getFullYear() === 2026);
+
+  let fullDaysPassed = 0;
+  let todayFraction = 0;
+
+  if (isMay2026) {
+    fullDaysPassed = now.getDate() - 1;
+    const h = now.getHours();
+    if (h >= 21) {
+      todayFraction = 1.0;
+    } else if (h >= 12) {
+      todayFraction = 0.5;
+    }
+  } else if (now.getTime() > new Date(2026, 4, 31).getTime()) {
+    fullDaysPassed = 31;
+  }
+
+  const effectiveDaysSpent = fullDaysPassed + todayFraction;
+  const effectiveDaysLeft = TOTAL_DAYS - effectiveDaysSpent;
+  const integerDaysLeft = TOTAL_DAYS - Math.floor(effectiveDaysSpent);
+
+  const FOOD_SPENT_SO_FAR = effectiveDaysSpent * DAILY_FOOD;
+  const TRANSPORT_SPENT_SO_FAR = effectiveDaysSpent * DAILY_TRANSPORT;
+
+  // --- LAUNDRY: Weekly deduction every Saturday 9pm ---
+  // First wash: 16 May 2026 (a Saturday). Count how many Saturdays 9pm have passed since.
+  function calcLaundryDeducted() {
+    const LAUNDRY_RATE = 8; // $8 per week
+    // First deduction: 16 May 2026 at 21:00 SGT (UTC+8 = 13:00 UTC)
+    const firstSat = new Date(2026, 4, 16, 21, 0, 0); // local time
+    if (now < firstSat) return 0;
+    // How many full weeks (Saturday 9pm intervals) have passed?
+    const msPerWeek = 7 * 24 * 60 * 60 * 1000;
+    const elapsed = now - firstSat;
+    const weeksPassed = Math.floor(elapsed / msPerWeek) + 1; // +1 because first sat itself counts
+    return weeksPassed * LAUNDRY_RATE;
+  }
+
+  // --- SINGTEL: $50 paid on 7 May (first payment/activation), then $50 recurring on 29th each month ---
+  const SINGTEL_FIRST_DATE = new Date(2026, 4, 7, 0, 0, 0); // 7 May 2026
+
+  function calcSingtelDeducted() {
+    const SINGTEL_RATE = 50;
+    // First payment on 7 May
+    let total = now >= SINGTEL_FIRST_DATE ? SINGTEL_RATE : 0;
+    // Recurring on 29th of each month: May 29, Jun 29, Jul 29...
+    let y = 2026, m = 4;
+    while (true) {
+      const billingDate = new Date(y, m, 29, 0, 0, 0);
+      if (billingDate > now) break;
+      total += SINGTEL_RATE;
+      m++;
+      if (m > 11) { m = 0; y++; }
+      if (y > 2030) break;
+    }
+    return total;
+  }
+
+  const LAUNDRY_DEDUCTED = calcLaundryDeducted();
+  const SINGTEL_DEDUCTED = calcSingtelDeducted();
+
+  function laundryWeeksCount() {
+    const firstSat = new Date(2026, 4, 16, 21, 0, 0);
+    if (now < firstSat) return 0;
+    const msPerWeek = 7 * 24 * 60 * 60 * 1000;
+    return Math.floor((now - firstSat) / msPerWeek) + 1;
+  }
+
+  function singtelPaymentsDesc() {
+    const SINGTEL_RATE = 50;
+    const hasFirst = now >= SINGTEL_FIRST_DATE;
+    let recurringCount = 0;
+    let y = 2026, m = 4;
+    while (true) {
+      const d = new Date(y, m, 29, 0, 0, 0);
+      if (d > now) break;
+      recurringCount++;
+      m++; if (m > 11) { m = 0; y++; }
+      if (y > 2030) break;
+    }
+    const parts = [];
+    if (hasFirst) parts.push('$50 paid 7 May');
+    if (recurringCount > 0) parts.push(`${recurringCount}× $50 on 29th`);
+    return parts.join(' + ');
+  }
+
+  // Formatting Helper
+  const fmt = (num) => '$' + Math.round(num).toLocaleString('en-US');
+
+  // DOM Loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    const foodRemAmt = effectiveDaysLeft * DAILY_FOOD;
+    const transRemAmt = effectiveDaysLeft * DAILY_TRANSPORT;
+
+    // Food
+    const chkFood = document.getElementById('chk-food');
+    chkFood.setAttribute('data-price', foodRemAmt);
+    document.getElementById('chk-food-price').innerText = fmt(foodRemAmt);
+    document.getElementById('chk-food-note').innerText = `$${DAILY_FOOD} per day`;
+
+    // Transport
+    const chkTrans = document.getElementById('chk-transport');
+    chkTrans.setAttribute('data-price', transRemAmt);
+    document.getElementById('chk-transport-price').innerText = fmt(transRemAmt);
+    document.getElementById('chk-transport-note').innerText = `$${DAILY_TRANSPORT} per day`;
+
+    // Laundry: set dynamic price & note
+    const chkLaundry = document.getElementById('chk-laundry');
+    const laundryWeeks = laundryWeeksCount();
+    chkLaundry.setAttribute('data-price', LAUNDRY_DEDUCTED);
+    document.getElementById('chk-laundry-price').innerText = fmt(LAUNDRY_DEDUCTED);
+    document.getElementById('chk-laundry-note').innerText = `Weekly Expense · ${laundryWeeks} week${laundryWeeks !== 1 ? 's' : ''} deducted · Every Saturday 9pm`;
+
+    // Singtel: set dynamic price & note
+    const chkPhone = document.getElementById('chk-phone');
+    const singtelDesc = singtelPaymentsDesc();
+    chkPhone.setAttribute('data-price', SINGTEL_DEDUCTED);
+    document.getElementById('chk-phone-price').innerText = fmt(SINGTEL_DEDUCTED);
+    document.getElementById('chk-phone-note').innerText = `Monthly Expense · First paid 7 May · Recurring on 29th · ${singtelDesc}`;
+
+    // Breakdown recurring amounts
+    document.getElementById('bd-laundry-amt').innerText = fmt(LAUNDRY_DEDUCTED);
+    document.getElementById('bd-laundry-desc').innerText = `Weekly Expense · $8/week · ${laundryWeeks} week${laundryWeeks !== 1 ? 's' : ''} since 16 May`;
+    document.getElementById('bd-singtel-amt').innerText = fmt(SINGTEL_DEDUCTED);
+    document.getElementById('bd-singtel-desc').innerText = `Monthly Expense · First paid 7 May · Recurring on 29th · ${singtelDesc}`;
+
+    document.getElementById('chk-rem-sub').innerText = "across items not yet settled";
+
+    calc();
+  });
+
+  // Tab Switch
+  function sw(target) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById(`p-${target}`).classList.add('active');
+  }
+
+  // Toggle Checklist
+  function toggle(el) {
+    el.classList.toggle('done');
+    calc();
+  }
+
+  // Main Calc Engine
+  function calc() {
+    let pendingTotal = 0;
+    let settledTotal = 0;
+    let doneItems = 0;
+
+    const catPending = { expenses: 0, supplies: 0, toiletries: 0 };
+    const breakdownInjections = [];
+    let otherEssentialsSpent = 0;
+
+    let dynamicFood = FOOD_SPENT_SO_FAR;
+    let dynamicTransport = TRANSPORT_SPENT_SO_FAR;
+    let dynamicLaundry = 0;
+    let dynamicSingtel = 0;
+
+    document.querySelectorAll('.chk').forEach(chk => {
+      const price = parseFloat(chk.getAttribute('data-price'));
+      const cat = chk.getAttribute('data-cat');
+      const isDone = chk.classList.contains('done');
+      const name = chk.querySelector('.chk-name').innerText;
+      const desc = chk.querySelector('.chk-note').innerText;
+
+      if (isDone) {
+        settledTotal += price;
+        doneItems++;
+
+        if (chk.id === 'chk-food') {
+          dynamicFood += price;
+        } else if (chk.id === 'chk-transport') {
+          dynamicTransport += price;
+        } else if (chk.id === 'chk-laundry') {
+          dynamicLaundry = price; // already factored into recurring
+        } else if (chk.id === 'chk-phone') {
+          dynamicSingtel = price; // already factored into recurring
+        } else {
+          otherEssentialsSpent += price;
+          breakdownInjections.push({ name, desc, price });
+        }
+      } else {
+        pendingTotal += price;
+        catPending[cat] += price;
+      }
+    });
+
+    const reqTotalValue = pendingTotal + settledTotal;
+    const pct = reqTotalValue === 0 ? 0 : Math.round((settledTotal / reqTotalValue) * 100);
+
+    // Overview
+    document.getElementById('ov-rem').innerText = fmt(pendingTotal);
+    document.getElementById('ov-settled').innerText = fmt(settledTotal);
+    document.getElementById('ov-pct').innerText = `${pct}%`;
+    document.getElementById('ov-bar').style.width = `${pct}%`;
+    document.getElementById('ov-cat-exp').innerText = fmt(catPending.expenses);
+    document.getElementById('ov-cat-sup').innerText = fmt(catPending.supplies);
+    document.getElementById('ov-cat-toi').innerText = fmt(catPending.toiletries);
+
+    // Checklist banner
+    document.getElementById('chk-rem').innerText = fmt(pendingTotal);
+    document.getElementById('chk-settled').innerText = fmt(settledTotal);
+    document.getElementById('chk-count').innerText = `${doneItems} done`;
+    document.getElementById('chk-pct').innerText = `${pct}%`;
+    document.getElementById('chk-bar').style.width = `${pct}%`;
+    document.getElementById('chk-cat-exp').innerText = fmt(catPending.expenses);
+    document.getElementById('chk-cat-sup').innerText = fmt(catPending.supplies);
+    document.getElementById('chk-cat-toi').innerText = fmt(catPending.toiletries);
+
+    // Food row
+    const isFoodDone = document.getElementById('chk-food').classList.contains('done');
+    const foodPct = isFoodDone ? 100 : Math.round((effectiveDaysSpent / TOTAL_DAYS) * 100);
+    document.getElementById('bd-food-desc').innerText = isFoodDone ? `Fully settled for May (${TOTAL_DAYS} days) · $${DAILY_FOOD} per day` : `$${DAILY_FOOD} per day · ${Math.round(effectiveDaysSpent)} of ${TOTAL_DAYS} days elapsed`;
+    document.getElementById('bd-food-amt').innerText = fmt(dynamicFood);
+    document.getElementById('bd-food-lbl').innerHTML = `<span>Budget tracking</span><span>${foodPct}%</span>`;
+    document.getElementById('bd-food-fill').style.width = `${foodPct}%`;
+
+    // Transport row
+    const isTransDone = document.getElementById('chk-transport').classList.contains('done');
+    const transPct = isTransDone ? 100 : Math.round((effectiveDaysSpent / TOTAL_DAYS) * 100);
+    document.getElementById('bd-transport-desc').innerText = isTransDone ? `Fully settled for May (${TOTAL_DAYS} days) · $${DAILY_TRANSPORT} per day` : `$${DAILY_TRANSPORT} per day · ${Math.round(effectiveDaysSpent)} of ${TOTAL_DAYS} days elapsed`;
+    document.getElementById('bd-transport-amt').innerText = fmt(dynamicTransport);
+    document.getElementById('bd-transport-lbl').innerHTML = `<span>Budget tracking</span><span>${transPct}%</span>`;
+    document.getElementById('bd-transport-fill').style.width = `${transPct}%`;
+
+    // Recurring subtotal in breakdown
+    const recurringTotal = dynamicLaundry + dynamicSingtel;
+    document.getElementById('bd-recurring-sub').innerText = fmt(recurringTotal);
+
+    document.getElementById('bd-housing-sub').innerText = fmt(FIXED_HOUSING);
+    document.getElementById('bd-daily-sub').innerText = fmt(dynamicFood + dynamicTransport);
+
+    // Dynamic "Other Essentials" section in breakdown
+    const dynList = document.getElementById('bd-dynamic-list');
+    let htmlInj = '';
+    if (breakdownInjections.length > 0) {
+      htmlInj += `<div class="sec">Other Essentials</div>`;
+      breakdownInjections.forEach(item => {
+        htmlInj += `
+        <div class="row-card">
+          <div class="row-accent" style="background:#ee7070"></div>
+          <div class="row-body"><div class="row-name">${item.name}</div><div class="row-desc">${item.desc}</div></div>
+          <div class="row-right"><div class="row-amt">${fmt(item.price)}</div><div class="badge b-paid">Paid</div></div>
+        </div>`;
+      });
+      htmlInj += `<div class="subtotal"><div class="sub-lbl">Other Essentials Total</div><div class="sub-val c-red">${fmt(otherEssentialsSpent)}</div></div>`;
+    }
+    dynList.innerHTML = htmlInj;
+
+    // Grand total
+    const dynamicDailyTotal = dynamicFood + dynamicTransport;
+    const GRAND_TOTAL = BASE_FIXED_SPENT + dynamicDailyTotal + dynamicLaundry + dynamicSingtel + otherEssentialsSpent;
+    const CASH_REMAINING = TOTAL_IN - GRAND_TOTAL;
+    const DISPLAYED_CASH = CASH_REMAINING - JOE_CONTRIBUTION_SGD;
+
+    document.getElementById('bd-grand-amt').innerText = fmt(GRAND_TOTAL);
+    document.getElementById('bb-cash').innerText = fmt(DISPLAYED_CASH);
+    document.getElementById('bb-rm').innerText = `≈ RM ${(DISPLAYED_CASH * RATE).toLocaleString('en-US', {maximumFractionDigits:0})}`;
+    document.getElementById('bb-spent').innerText = `${fmt(GRAND_TOTAL)} spent`;
+    document.getElementById('sum-spent').innerText = fmt(GRAND_TOTAL);
+    document.getElementById('sum-cash').innerText = fmt(DISPLAYED_CASH);
+
+    const globalPct = Math.max(0, Math.min(100, Math.round((GRAND_TOTAL / TOTAL_IN) * 100)));
+    document.getElementById('bb-pct').innerText = `${globalPct}% of pool`;
+    document.getElementById('bb-fill').style.width = `${globalPct}%`;
+
+    // Bar chart
+    const barWrap = document.getElementById('bars');
+    const bData = [
+      { n: 'Housing (May & June)', v: FIXED_HOUSING, c: '#3dd4ec' },
+      { n: 'Deposits Placed', v: FIXED_DEPOSITS, c: '#eda820' },
+      { n: 'Daily Living', v: dynamicDailyTotal, c: '#10c484' },
+      { n: 'Room Setup', v: FIXED_SETUP, c: '#8878e0' },
+      { n: 'Other Essentials', v: otherEssentialsSpent, c: '#ee7070' },
+      { n: 'Recurring (Laundry + Singtel)', v: dynamicLaundry + dynamicSingtel, c: '#3dd4ec' },
+      { n: 'Travel', v: FIXED_TRAVEL, c: '#6e90ae' }
+    ];
+
+    let barHtml = '';
+    bData.sort((a,b) => b.v - a.v).forEach(b => {
+      if(b.v > 0) {
+        const fillP = Math.max(2, Math.round((b.v / GRAND_TOTAL) * 100));
+        barHtml += `
+        <div style="margin-bottom:14px">
+          <div style="display:flex; justify-content:space-between; font-size:11px; color:#c4d8ec; margin-bottom:5px">
+            <span style="font-weight:600; letter-spacing:0.02em">${b.n}</span>
+            <span style="font-family:var(--serif); font-size:16px">${fmt(b.v)}</span>
+          </div>
+          <div style="height:5px; background:#172135; border-radius:3px; overflow:hidden">
+            <div style="height:100%; width:${fillP}%; background:${b.c}; border-radius:3px; transition:width 0.5s ease"></div>
+          </div>
+        </div>`;
+      }
+    });
+    barWrap.innerHTML = barHtml;
+  }
+</script>
+</body>
+</html>
